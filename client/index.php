@@ -311,7 +311,7 @@
 </head>
 <body>
 	<div class="heading">
-		<div class="window"><h1>WebPS <span>&rsaquo; REST API Request Processor</span></h1></div>
+		<div class="window"><h1>WebPS <span>&rsaquo; REST Inspection and Testing System</span></h1></div>
 	</div>
 	<div class="full">
 	<div class="window">
@@ -417,8 +417,11 @@
 		<div style="display: inline-block;"><div class="requestsent csshidden"><span class="glyphicon glyphicon-ok"></span> &nbsp;Done</div></div>
 		<div class="alert alert-danger csshidden request_error_data" role="alert"></div>
 		<div class="result_rows csshidden">	
+		<div class="space"></div>
+		<div class="panel panel-default infopanel csshidden">
+		<div class="panel-body">
+		</div></div>
 			<div class="csshidden headers_request_result">
-				<div class="space"></div>
 				<div class="label">Request headers:</div>
 				<div class="space-small"></div>
 				<pre></pre>
@@ -698,6 +701,9 @@
 						'<div style="font-weight: bold; width: 180px;display: inline-block;">' + 
 						_formatHeader( header ) + ': </div>' + result[ 'response_headers' ][ header ] + '<br />' );
 				}
+				$( '.infopanel .panel-body' ).html( '<code style="font-size: 18px;font-weight: bold;margin-right: 5px;">' + $( '.selectpicker_method' ).val() + '</code>' + ' <samp> ' + $( '.desturl' ).val() + '</samp>' );
+				$( '.infopanel' ).slideDown( 100 );
+
 				$( '.headers_response_result' ).slideDown( 100 );
 				
 				var HTTPCodes = {
@@ -748,40 +754,31 @@
 		}
 
 		function WebPS_Backup_SaveAllData() {
-			if( typeof( Storage ) !== "undefined" ) {
-				localStorage.setItem( "webps_apirm_psw_dest", $( '.desturl' ).val() );
-				localStorage.setItem( "webps_apirm_psw_data", getPlainRAW() );
-				localStorage.setItem( "webps_apirm_psw_rawview", $( '.raw_show' ).is( ':checked' ) );
-				localStorage.setItem( "webps_apirm_psw_opt_show_out_headers", $( '.showrequestheaders' ).is( ':checked' ) );
-				localStorage.setItem( "webps_apirm_psw_opt_show_in_headers", $( '.showrepsonseheaders' ).is( ':checked' ) );
-				localStorage.setItem( "webps_apirm_psw_opt_jsonpurify", $( '.jsonpurify' ).is( ':checked' ) );
+			if( typeof( localStorage ) !== "undefined" ) {
+				if( $( '.desturl' ).val() )
+					localStorage.setItem( "webps_apirm_psw_dest", $( '.desturl' ).val() );
+				//alert( localStorage.getItem( "webps_apirm_psw_dest" ) );
+				localStorage.setItem( "webps_apirm_psw_data", ( getPlainRAW() == '=undefined' ? '' : getPlainRAW() ) );
 			}
 		}
 
-		setInterval( function() { WebPS_Backup_SaveAllData(); }, 7500 );
+		setInterval( function() { WebPS_Backup_SaveAllData(); }, 1500 );
 
 		function WebPS_Backup_RestoreAllData() {
+			//alert( localStorage.getItem( "webps_apirm_psw_dest" ) );
 			$( '.desturl' ).val( localStorage.getItem( "webps_apirm_psw_dest" ) );
-			$( '.raw_data' ).val( localStorage.getItem( "webps_apirm_psw_data" ) );
-			if( localStorage.getItem( "webps_apirm_psw_rawview" ) != false )
-				$( '.converttoparams' ).click();
-			$( '.showrequestheaders' ).prop( 'checked', localStorage.getItem( "webps_apirm_psw_opt_show_out_headers" ) == 'true' );
-			$( '.showrepsonseheaders' ).prop( 'checked', localStorage.getItem( "webps_apirm_psw_opt_show_in_headers" ) == 'true' );
-			$( '.jsonpurify' ).prop( 'checked', localStorage.getItem( "webps_apirm_psw_opt_jsonpurify" ) == 'true' );
+			if( localStorage.getItem( "webps_apirm_psw_data" ) ) {
+				$( '.raw_data' ).val( localStorage.getItem( "webps_apirm_psw_data" ) );
+				if( localStorage.getItem( "webps_apirm_psw_rawview" ) != false )
+					$( '.converttoparams' ).click();
+			}
 		}
 
 		function WebPS_Backup_CheckDataAvailable() {
-			if( localStorage.getItem( "webps_apirm_psw_dest" ).length > 0 ) {
-				WebPS_Backup_RestoreAllData();
-			}
+			WebPS_Backup_RestoreAllData();
 		}
 
-		function WebPS_SaveSystem_Save() {
-			name = $( '#request-name').val();
-			$( '.saveRequest' ).modal( 'hide' );
-		}
-
-		WebPS_Backup_CheckDataAvailable();
+		$( document ).ready( function() { WebPS_Backup_CheckDataAvailable(); } );
 
 		$( '.selectpicker_method' ).selectpicker();
 	</script>
