@@ -1,9 +1,11 @@
-# REST Inspection and Testing System (RESTITS)
-#### Inspect your REST APIs locally & create automatic tests
-This Node.JS is designed to test REST APIs and has following features:
-* Test your REST APIs with built-in Request Master and save them;
-* Write automated tests with simple scripting language;
-* Schedule testing and receive notifications in case of failure.
+## REST Inspection and Testing System (RESTITS)
+#### Inspect and check your REST APIs locally & build testing scenarios
+This Node.JS-based script is designed to inspect REST APIs with local mashine and has following features:
+* Check and test your REST APIs behavior with built-in Request Master and save them for later;
+* ~~Write automated testing scenarios with simple scripting language;~~
+* ~~Schedule automatic inspections and receive notifications with results;~~
+* ~~Build complex test scenarios and immediately run them;~~
+* ~~Share results with your team and generate reports with build-in report generator.~~
 
 #### How to run
 * Download and copy to local path contents of "master";
