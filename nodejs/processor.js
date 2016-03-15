@@ -16,6 +16,9 @@ module.exports = {
 			}
 		};
 
+		var debug = require( './debugger' );
+		debug.runDebug();
+
 		if( auth != null ) {
 			var login_data = auth.split( '~$$', 2 );
 			console.log( '== AUTH --> ');
@@ -32,7 +35,7 @@ module.exports = {
  			response.errorCode = null;
 			res.on( 'data', function ( chunk ) {
 	   			response.data = chunk;
-
+	   			response.executionTime = debug.getExecutionTime();
 	   			try {
 					callback( response );
 				} catch( err ) {}

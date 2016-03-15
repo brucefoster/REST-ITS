@@ -26,6 +26,30 @@ Object.extend = function(destination, source) {
 	return destination;
 };
 
+function reportVisualHandler( report ) {
+	var report_lines = report.split( "\n" );
+	var final_report = [];
+	for( line in report_lines ) {
+		var type = report_lines[ line ].split( " ", 2 )[ 0 ];
+		switch( type.toLowerCase() ) {
+			case '[notice]':
+				final_report.push( '<span style="color: #3DB6BF;">' + report_lines[ line ] + '</span>' );
+				break;
+			case '[info]':
+				final_report.push( '<span style="color: #305AA3;">' + report_lines[ line ] + '</span>' );
+				break;
+			case '[error]':
+				final_report.push( '<span style="color: #CC2E31;">' + report_lines[ line ] + '</span>' );
+				break;
+			case '[data]':
+				final_report.push( '<span style="color: #B75E45;">' + report_lines[ line ] + '</span>' );
+				break;
+		}
+	}
+
+	return final_report.join( "<br />");
+}
+
 function requestProcessor( request, response ) {
 
 	var qs = require( 'querystring' );
@@ -94,6 +118,22 @@ function requestProcessor( request, response ) {
 				);
 			}
 		);
+	} else if( request.url == '/test-scenario' ) {
+   		var sp = require( './nodejs/scenario-processor' );
+		var scenario = `POST http://github.me:8080/APIRequestBuilder/
+addParam alfa=omega
+addParam test=yes
+addheader Content-Type=text/html; charset=utf-8
+//HTTPAuth login:password
+Assert http_code=200
+Assert response.response.0.uid is 1
+Assert response_headers.connection=keep alive test`;
+			sp.runScenario( scenario, function( cons, report ) {
+					response.setHeader( "Content-Type", "text/html; charset=utf-8" );
+					response.write( '<div style="font: 14px/24px Arial;">' + reportVisualHandler( report ) );
+					response.end();
+			} );
+			return;
 	} else {
 		if( request.url.substr( 0, 7 ) == '/client' ) {
 			fs.readFile( __dirname + request.url, function( error, data ) {
@@ -106,13 +146,13 @@ function requestProcessor( request, response ) {
 		}
 
 		var current_request = ( request.url == '/' ? 'index' : request.url.slice( 1 ).split( '/' ).join( '-' ) );  
-		fs.readFile( './client/' + current_request + '.php', function( error, data ) {
+		fs.readFile( './client/' + current_request + '.js', function( error, data ) {
 			if( data ) {
-				response.setHeader( "Content-Type", "text/html; charset=utf-8" );
+				var page =
 				response.write( data );
 				response.end();
 			} else
-				response.end( '404 Not Found' );
+				response.end( '404 Not Found: ' + request.url );
 		} );
 	}
 }
