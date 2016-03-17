@@ -59,12 +59,12 @@ function requestProcessor( request, response ) {
 		request.on( 
 			'data', function( chunk ) {
 				http_request_body += chunk.toString();
-   			}
-   		);
+			}
+		);
 
-   		// Handling them
-   		request.on( 
-   			'end', function() {
+		// Handling them
+		request.on( 
+			'end', function() {
 				var debug = require( './nodejs/debugger' );
 				debug.runDebug();
 				var post_data = qs.parse( http_request_body );
@@ -75,10 +75,10 @@ function requestProcessor( request, response ) {
 				var req = require( './nodejs/processor' );
 				var request_data = post_data[ 'data' ].split( '/$webps:s_and/' ).join( '&' ).split( '/$webps:s_eq/' ).join( '=' );
 				if( post_data[ 'method' ] == 'GET' ) {
-	   				var original_url = url.parse( post_data[ 'url' ], true );
-	   				var query = original_url[ 'query' ];
+					var original_url = url.parse( post_data[ 'url' ], true );
+					var query = original_url[ 'query' ];
 					original_url[ 'query' ] = ( Object.extend( query, parseQuery( request_data ) ) );
-	   				var real_url = url.format( original_url );
+					var real_url = url.format( original_url );
 					post_data[ 'url' ] = real_url;
 				}
 				req.sendRequest(
@@ -119,7 +119,7 @@ function requestProcessor( request, response ) {
 			}
 		);
 	} else if( request.url == '/test-scenario' ) {
-   		var sp = require( './nodejs/scenario-processor' );
+		var sp = require( './nodejs/scenario-processor' );
 		/*var scenario = `POST http://github.me:8080/APIRequestBuilder/
 addParam alfa=omega
 addParam test=yes
@@ -166,10 +166,81 @@ Assert response_headers.connection=keep alive test`;*/
 	}
 }
 
-var serveStatic = require( 'serve-static' );
-var serve = serveStatic( './client/' );
+var handler = require( './nodejs/webpage-handler.js' );
 
-var server = http.createServer( requestProcessor );
+	handler.makeStatic( 'client/' );
+	handler.addRule(
+		'(\\/send)$',
+		function( request, response, matches ) {
+			var qs = require( 'querystring' );
+			var http_request_body = '';
+			// Catching incoming parameters
+			request.on( 
+				'data', function( chunk ) {
+					http_request_body += chunk.toString();
+				}
+			);
+
+			// Handling them
+			request.on( 
+				'end', function() {
+					var debug = require( './nodejs/debugger' );
+					debug.runDebug();
+					var post_data = qs.parse( http_request_body );
+					
+					var url = require( 'url' );
+
+					// Now we know all the params, let's work
+					var req = require( './nodejs/processor' );
+					var request_data = post_data[ 'data' ].split( '/$webps:s_and/' ).join( '&' ).split( '/$webps:s_eq/' ).join( '=' );
+					if( post_data[ 'method' ] == 'GET' ) {
+						var original_url = url.parse( post_data[ 'url' ], true );
+						var query = original_url[ 'query' ];
+						original_url[ 'query' ] = ( Object.extend( query, parseQuery( request_data ) ) );
+						var real_url = url.format( original_url );
+						post_data[ 'url' ] = real_url;
+					}
+					req.sendRequest(
+						post_data[ 'url' ],
+						post_data[ 'method' ],
+						'',
+						post_data[ 'auth' ],
+						request_data,
+						function( result ) {
+							if( result[ 'errorCode' ] !== null ) {
+								var client_response = {};
+								client_response[ 'error' ] = result[ 'errorCode' ];
+								client_response[ 'error_description' ] = result[ 'errorDescription' ];
+								try {
+									response.end( JSON.stringify( client_response ) );
+								} catch( err ) {
+								}
+
+								return;
+							}
+							response.setHeader( "Content-Type", "text/html; charset=utf-8" );
+							var client_response = {};
+							client_response[ 'http_status_code' ] = result.httpStatusCode;
+							client_response[ 'request_headers' ] = result.sentHeaders;
+							client_response[ 'response_headers' ] = result.headers;
+							client_response[ 'response_data' ] = result.data;
+
+							client_response[ 'execution_time' ] = debug.getExecutionTime();
+							client_response[ 'request_data' ] = request_data;
+
+							try {
+								response.write( JSON.stringify( client_response ) );
+								response.end();
+							} catch( err ) {
+							}
+						}
+					);
+				}
+			);
+		}
+	);
+
+var server = http.createServer( handler.handleURL );
 server.listen( http_port, function() {
 	console.log( "Server listening on: http://localhost:%s", http_port );
 } );

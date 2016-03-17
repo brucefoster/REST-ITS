@@ -187,27 +187,35 @@ module.exports = {
 				add: function( param, value ) {
 					if( param in _request_info[ 'data' ] ) {
 						if( options.strict === true )
-							return !_history.push( `[Error] Failed to ADD request param: "${param}" is already exists` + options.getStrictMode() );
+							return !_history.push( `-e Failed to ADD request param: "${param}" is already exists` + options.getStrictMode() );
 						else
-							_history.push( `[Notice] Request param is MODIFIED instead of ADDING: "${param}" is already exists` + options.getStrictMode() );
-					} else
-						_history.push( `[Info] Added request param: "${param}" = "${value}"` );
+							_history.push( `-n Request param is MODIFIED instead of ADDING: "${param}" is already exists` + options.getStrictMode() );
+					} else _history.push( `-i Added request param: "${param}" = "${value}"` );
+
 					_request_info[ 'data' ][ param ] = value;
 				},
 
 				delete: function( param ) {
+					if( !( param in _request_info[ 'data' ] ) )
+						return !_history.push( `-e Failed to REMOVE request param: "${param}" does not exist` + options.getStrictMode() );
 					_request_info[ 'data' ].removeItem( param );
-					_history.push( '[Info] Removed request param: ' + param );
+					_history.push( `[Info] Removed request param: "${param}"` );
 				},
 
 				modify: function( param, value ) {
-					_history.push( '[Info] Modified request param: "' + param + '" was "' + _request_info[ 'data' ][ param ] + '", changed to "' + value + '"' );
+					if( !( param in _request_info[ 'data' ] ) ) {
+						if( options.strict === true )
+							return !_history.push( `-e Failed to MODIFY request param: "${param}" does not exist` + options.getStrictMode() );
+						else
+							_history.push( `-n Request param is ADDED instead of MODIFYING: "${param}" does not exist` + options.getStrictMode() );
+					} else _history.push( `-i Modified request param: "${param}" = "${value}", previously was "{$_request_info[ 'data' ][ param ]}"` );
+
 					_request_info[ 'data' ][ param ] = value;
 				},
 
 				clear: function() {
-					_history.push( '[Info] Cleared all request params: ' + _request_info[ 'data' ][ param ].length + ' deleted' );
-					_request_info[ 'data' ][ param ] = value;
+					_history.push( `-i Clear all request params: success, {$_request_info[ 'data' ][ param ].length} items deleted` );
+					_request_info[ 'data' ] = [];
 				}
 			}
 		};
