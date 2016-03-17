@@ -30,7 +30,7 @@ function reportVisualHandler( report ) {
 	var report_lines = report.split( "\n" );
 	var final_report = [];
 	for( line in report_lines ) {
-		var type = report_lines[ line ].split( " ", 2 )[ 0 ];
+		var type = report_lines[ line ].toString().split( " ", 2 )[ 0 ];
 		switch( type.toLowerCase() ) {
 			case '[notice]':
 				final_report.push( '<span style="color: #3DB6BF;">' + report_lines[ line ] + '</span>' );
@@ -120,19 +120,28 @@ function requestProcessor( request, response ) {
 		);
 	} else if( request.url == '/test-scenario' ) {
    		var sp = require( './nodejs/scenario-processor' );
-		var scenario = `POST http://github.me:8080/APIRequestBuilder/
+		/*var scenario = `POST http://github.me:8080/APIRequestBuilder/
 addParam alfa=omega
 addParam test=yes
 addheader Content-Type=text/html; charset=utf-8
 //HTTPAuth login:password
 Assert http_code=200
 Assert response.response.0.uid is 1
-Assert response_headers.connection=keep alive test`;
-			sp.runScenario( scenario, function( cons, report ) {
+Assert response_headers.connection=keep alive test`;*/
+			var script = `
+			request.params.add( 'hostname', 'data' );
+			request.params.add( 'hostname', 'data' );
+			options.strict = false;
+			request.params.add( 'hostname', 'data' );
+			request.params.delete( 'correct' );
+			request.params.modify( 'alpha', false );
+			`;
+			var result = sp._executeScript( script );
+
 					response.setHeader( "Content-Type", "text/html; charset=utf-8" );
-					response.write( '<div style="font: 14px/24px Arial;">' + reportVisualHandler( report ) );
+					response.write( '<div style="font: 14px/24px Arial;">' + reportVisualHandler( result ) );
 					response.end();
-			} );
+			
 			return;
 	} else {
 		if( request.url.substr( 0, 7 ) == '/client' ) {

@@ -1,3 +1,12 @@
+Object.prototype.removeItem = function( key ) {
+	if ( !this.hasOwnProperty( key ) )
+		return;
+	if ( isNaN( parseInt( key ) ) || !( this instanceof Array ) )
+		delete this[ key ];
+	else
+		this.splice( key, 1 );
+};
+
 module.exports = {
 	requestOptions: {
 		method: null,
@@ -38,6 +47,11 @@ module.exports = {
 		module.exports.report = '';
 	},
 
+	/*
+	==============
+	DEPRECATED
+	==============
+	*/
 	runScenario: function( scenario, callback ) {
 		module.exports.reset();
 		var scenario_lines = scenario.split( "\n" );
@@ -71,6 +85,11 @@ module.exports = {
 		);
 	},
 
+	/*
+	==============
+	DEPRECATED
+	==============
+	*/
 	_processString( str ) {
 		var result = str;
 		if( module.exports.systemOptions[ 'trim' ] === true )
@@ -79,6 +98,11 @@ module.exports = {
 		return result;
 	},
 
+	/*
+	==============
+	DEPRECATED
+	==============
+	*/
 	_processLine( scenario_line ) {
 		console.log( '! PROCESSING LINE ' + scenario_line );
 		if( scenario_line.slice( 0, 2 ) == '//' )
@@ -135,6 +159,11 @@ module.exports = {
 		}
 	},
 
+	/*
+	==============
+	DEPRECATED
+	==============
+	*/
 	_assert_equal( code, value, match ) {
 		var $ = module.exports;
 			if( value === match ) {
@@ -148,9 +177,57 @@ module.exports = {
 	},
 
 	_executeScript( script ) {
+		var _request_info = {
+			data: {},
+		};
 
+		var _history = [];
+		var request = {
+			params: {
+				add: function( param, value ) {
+					if( param in _request_info[ 'data' ] ) {
+						if( options.strict === true )
+							return !_history.push( `[Error] Failed to ADD request param: "${param}" is already exists` + options.getStrictMode() );
+						else
+							_history.push( `[Notice] Request param is MODIFIED instead of ADDING: "${param}" is already exists` + options.getStrictMode() );
+					} else
+						_history.push( `[Info] Added request param: "${param}" = "${value}"` );
+					_request_info[ 'data' ][ param ] = value;
+				},
+
+				delete: function( param ) {
+					_request_info[ 'data' ].removeItem( param );
+					_history.push( '[Info] Removed request param: ' + param );
+				},
+
+				modify: function( param, value ) {
+					_history.push( '[Info] Modified request param: "' + param + '" was "' + _request_info[ 'data' ][ param ] + '", changed to "' + value + '"' );
+					_request_info[ 'data' ][ param ] = value;
+				},
+
+				clear: function() {
+					_history.push( '[Info] Cleared all request params: ' + _request_info[ 'data' ][ param ].length + ' deleted' );
+					_request_info[ 'data' ][ param ] = value;
+				}
+			}
+		};
+
+		var options = {
+			strict: true,
+			getStrictMode: function() {
+				return ' (strict mode ' + ( this.strict === true ? 'enabled' : 'disabled' ) + ')';
+			}
+		};
+
+		eval( script );
+		return _history.join( "\n" ).toString();
 	},
 
+	/*
+	==============
+	DEPRECATED
+	==============
+	*/
 	_processConditions() {
 		var $ = module.exports;
 		console.log( $.conditions );
