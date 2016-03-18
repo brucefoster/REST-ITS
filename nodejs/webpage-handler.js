@@ -49,7 +49,7 @@ module.exports = {
 						if( file_contents )
 							response.write( file_contents );
 						else 
-							response.setHeader( 'HTTP/1.0 404 Not Found' );
+							response.writeHead( 404, { "Content-Type": "text/html" } );
 
 						response.end();
 					} 

@@ -2,6 +2,7 @@ module.exports = {
 	loadTemplate: function( dest_template, title, replaces, callback ) {
 		var fs = require( 'fs' );
 		var shell = '';
+		var build = '0.3.7';
 		var menu_items = {
 			'/': 'Request Master',
 			'/plain': 'Plain request editor',
@@ -25,6 +26,7 @@ module.exports = {
 				shell = template.toString();
 				shell = shell.replace( '{title}', title );
 				shell = shell.replace( '{tabs}', menu );
+				shell = shell.replace( '{build}', build );
 
 				var content = '';
 				fs.readFile( './client/templates/' + dest_template + '.html', function( error, template ) {

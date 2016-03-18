@@ -29,6 +29,17 @@ html,body {
 			margin: 0px 0px 0 0;
 		}
 
+		.bottom-nav {
+			margin-top: 5px;
+			font: 13px Arial;
+			color: #808080;
+			text-align: center;
+		}
+
+		.final {
+			margin-top: 50px;
+		}
+
 		.full {
 			width: 100%;
 		}
