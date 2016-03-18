@@ -3,6 +3,8 @@ module.exports = {
 		static: [],
 		dynamic: {}
 	},
+
+	currentURL: '',
 	/*
 	@func	makeStatic
 	@param	obj			File, folder or array of folders to provide an static access for them or their contents
@@ -37,6 +39,7 @@ module.exports = {
 		var fs = require( 'fs' );
 
 		var url = request.url;
+		module.exports.currentURL = url;
 
 		// First of all, let's handle static URLs.
 		for( index in $.handlingRules[ 'static' ] ) {
@@ -59,6 +62,7 @@ module.exports = {
 			var rgx = new RegExp( regex ); 
 			if( rgx.test( url ) === true ) {
 				$.handlingRules[ 'dynamic' ][ regex ]( request, response, url.match( rgx ) );
+				break;
 			}
 		}
 	},

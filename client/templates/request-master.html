@@ -1,329 +1,4 @@
-<!DOCTYPE html>
-<html ng-app="requestBuilder">
-<head>
-	<meta charset="utf-8" />
-	<meta name="google" value="notranslate" />
-	<title>WebPS REST API Testing Tool</title>
-	<link rel="shortcut icon" href="/client/favicon.png" />
 
-	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="/client/js/plugin.selectbox/js/bootstrap-select.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
-	
-	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="/client/js/plugin.selectbox/css/bootstrap-select.css" />
-	<style type="text/css">
-		html,body {
-			padding: 0;
-			margin: 0;
-			width: 100%;
-		}
-
-		.heading {
-			background: #F2F7FF;
-			padding: 10px 20px 10px 20px;
-			border-bottom: solid 1px #B7D0E5;
-		}
-
-		.heading h1 {
-			color: #2A6799;
-			margin: 0 0 0 50px;
-			font: bold 22px Arial;
-		}
-
-		.heading h1 span {
-			color: #2A6799;
-			margin: 0px;
-			font: 22px/34px Arial;
-		}
-
-		.label {
-			font: 14px Arial;
-			color: #505050;
-			padding: 0px;
-			margin: 0px 0px 0 0;
-		}
-
-		.full {
-			width: 100%;
-		}
-
-		.window {
-			display: table;
-			vertical-align: top;
-			width: 1000px;
-			max-width: 1000px;
-			margin: 0 auto 0 auto;
-		}
-
-		.container {
-			padding: 50px;
-			display: table-cell;
-			vertical-align: top;
-			margin: 0;
-		}
-
-		.sidebar {
-			padding: 50px 50px 0px 0px;
-			width: 320px !important;
-			min-width: 320px !important;
-			display: table-cell;
-			vertical-align: top;
-			vertical-align: top;
-		}
-
-		.menu {
-			padding: 20px;
-			background: #E8EAF1;
-			border: solid 0px red;
-			border-radius: 4px;
-			margin-bottom: 10px;
-		}
-
-		.menu h3 {
-			font: bold 14px Arial;
-			margin: 0px;
-			margin-bottom: 10px;
-			color: #505050;
-			text-transform: uppercase;
-		}
-
-		input[type=text]:not( .css_free ) {
-			font: 16px Arial;
-			margin-top: 10px;
-		}
-
-		.longinput {
-			width: 400px;
-			display: inline-block;
-		}
-
-		.linksblock a {
-			color: #304683;
-			font: 14px/30px Arial;
-			text-decoration: none;
-			border-bottom: solid 1px #C1C8DA;
-			padding-bottom: 2px;
-		}
-
-		.linksblock a:hover {
-			color: #BC2929;
-			border-bottom: solid 1px #CDA4A4;
-		}
-
-		.opentree {
-			border: solid 1px #304683;
-			width: 18px;
-			height: 18px;
-			text-align: center;
-			background: #304683;
-			color: white;
-			font: bold 10px/18px Arial;
-			border-radius: 3px;
-			margin-right: 5px;
-			vertical-align: middle;
-			display: inline-block;
-		}
-
-		.opentreetext {
-			font: bold 14px/18px Arial;
-			color: #304683;
-			display: inline-block;
-		}
-
-		.intree {
-			padding-top: 5px;
-			padding-left: 14px;
-			border-left: solid 1px #C5CBDC;
-			margin-left: 9px;
-		}
-
-		.space {
-			width: 100%;
-			height: 30px;
-		}
-
-		.space-small {
-			width: 100%;
-			height: 15px;
-		}
-
-		label:not( .css_free ) {
-			0margin-right: 30px;
-		}
-
-		.btn-group {
-			margin-right: 10px;
-			display: inline-block !important;
-		}
-
-		.btn-group:last-child {
-			margin-right: 0px;
-		}
-
-		.inline {
-			display: inline-block !important;
-		}
-
-		table tr td:first-child {
-			padding-right: 10px;
-		}
-
-		table tr td:last-child {
-			padding-left: 10px;
-			padding-top: 10px;
-		}
-
-		table tr td:last-child button {
-			vertical-align: middle !important;
-		}
-
-		.times {
-			font-size: 26px;
-			text-align: center;
-			color: #808080;
-			padding-left: 10px;
-			padding-top: 10px;
-			vertical-align: middle;
-		}
-
-		.csshidden {
-			display: none;
-		}
-
-		textarea {
-			min-height: 150px;
-		}
-
-		.requestsent {
-			margin-left: 15px;
-			color: green;
-		}
-
-		.tooltip-inner {
-			padding: 5px 10px 5px 10px;
-			font-size: 13px;
-		}
-
-		.title {
-			margin: 20px 0 5px 0;
-		}
-
-		.title.empty {
-			color: #959595;
-		}
-
-		.title.empty span {
-			color: #BBBBBB;
-			font-size: 20px;
-			padding-left: 5px;
-		}
-
-		input.title {
-			color: #193175 !important;
-			display: block;
-			font-size: 24px;
-			line-height: 26.4px;
-			border: solid 0px white;
-			border-bottom: solid 2px #CCD4EA;
-			padding: 0px 0 5px 0;
-			min-width: 500px;
-			margin-top: 20px;
-			margin-bottom: 16px;
-		}
-
-		textarea:focus, input:focus{
-			outline: none;
-		}
-
-		h3.title span {
-			cursor: pointer;
-		}
-
-		label div.grey {
-			color: #BBBBBB;
-			padding-left: 0px;
-			text-align: left;
-			display: block;
-			font-size: 12px;
-			line-height: 24px;
-			width: 230px;
-		}
-
-		label {
-			padding-top: 5px;
-			padding-bottom: 10px;
-			vertical-align: top;
-		}
-
-		.optionmark {
-			margin-left: 10px;
-			margin-right: 5px;
-			font-size: 18px;
-			padding: 2px 5px 8px 5px;
-			color: #BBBBBB;
-			vertical-align: top;
-			margin-top: 5px;
-			border-bottom: solid 3px #EEEEEE;
-		}
-
-		.optionmark.enabled {
-			color: #2767B5;
-			border-bottom: solid 3px #ABC1DB;
-		}
-
-		.nav-tabs {
-		}
-
-		.bootstrap-switch {
-			margin-right: 10px;
-		}
-
-		.request_error_data {
-			margin-top: 20px;
-		}
-
-		.btn-default .btn-default:not( .toggle-handle ) {
-			border: none;
-			background: #EEEEEE;
-		}
-
-		.btn-default .toggle-handle {
-			background: #FFFFFF;
-		}
-
-		.toggle {
-			margin-right: 10px;
-		}
-
-		.httpauth {
-			display: none;
-			padding: 10px 0 0px 25px;
-			margin: 15px 0 0 75px;
-			border-left: solid 3px #EEEEEE;
-		}
-	</style>
-
-</head>
-<body>
-	<div class="heading">
-		<div class="window"><h1>WebPS <span>&rsaquo; REST Inspection and Testing System</span></h1></div>
-	</div>
-	<div class="full">
-	<div class="window">
-	<div class="container">
-		<ul class="nav nav-tabs">
-			<li role="presentation" class="active"><a href="#">Request Master</a></li>
-			<li role="presentation"><a href="#">Plain request editor</a></li>
-			<li role="presentation"><a href="#">Testing Scenarios</a></li>
-			<li role="presentation"><a href="#">Saved Requests</a></li>
-			<li role="presentation"><a href="#">Global Settings</a></li>
-			<li role="presentation"><a href="#">Logs & History</a></li>
-		</ul>
 		<div class="tab request-builder" ng-controller="requestNameController" >
 		<h3 class="title empty" ng-show="!requestRenameMarker">{{requestName + ' '}}<span ng-click="changeReqName( $event )">[click to change]</span></h3>
 		<form ng-submit="updateName( $event )">
@@ -342,7 +17,7 @@
 			<option value="d" >DELETE Request</option>
 			<option value="pu" >PUT Request</option>
 		</select>
-		<input type="text" class="form-control desturl" ng-model="test" style="display: inline-block;width: 730px;" data-toggle="tooltip" title="Enter destination URL first." placeholder="http://" />
+		<input type="text" class="form-control desturl" ng-model="test" style="display: inline-block;width: 770px;" data-toggle="tooltip" title="Enter destination URL first." placeholder="http://" />
 		<div class="space"></div>
 		
 		<h4 style="font-weight: bold;padding: 10px 0 0 0;margin: 0;">Parameters to send</h4>
@@ -438,7 +113,7 @@
 				<div class="space-small"></div>
 				<pre></pre>
 			</div>
-			<div class="csshidden request_result">
+			<div class="csshidden request_result" style="max-width: 879px;">
 				<div class="space"></div>
 				<div class="label">Response: &nbsp; &nbsp; 
 				<span class="glyphicon glyphicon-time"></span>&nbsp; got in <span class="time"></span>s  
@@ -507,9 +182,7 @@
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="runRequest();">Repeat request</button>
 	  </div>
-	</div>
-  </div>
-</div>
+	
 	<script type="text/javascript">
 		var app = angular.module( 'requestBuilder', [] );
 		app.controller( 'requestNameController', function( $scope ) {
@@ -712,8 +385,9 @@
 					500: '<b style="color: darkred;">500 Internal Server Error</b>',
 					401: '<b style="color: red;">401 Not Authorized</b>',
 				};
-				$( '.sent_data pre' ).html( result[ 'request_data' ].split('=').join( '<span style="color: red;padding: 0 3px 0 3px;">=</span>').split('&').join( '<span style="color: violet;padding: 0 3px 0 3px;">&amp;</span><br />') );
+				$( '.sent_data pre' ).html( result[ 'request_data' ].split('=').join( '<span style="color: #66B246;padding: 0 2px 0 2px;">=</span>').split('&').join( '<span style="color: #2187B8;padding: 0 2px 0 2px;">&amp;</span>') );
 				$( '.sent_data' ).slideDown( 100 );
+				response = response.split( '<' ).join( '&lt;' ).split( '>' ).join( '&gt;' );
 				$( '.request_result pre' ).html( response.length == 0 ? '<span style="color: red;"><b>WebPS</b>: empty response body</span>' : response );
 				$( '.time' ).html( result[ 'execution_time' ] );
 				$( '.state' ).html( HTTPCodes[ result[ 'http_status_code' ] ] );
@@ -782,10 +456,3 @@
 
 		$( '.selectpicker_method' ).selectpicker();
 	</script>
-	 <?php
-		foreach( Panel::$postPageData as $item ) {
-			print $item;
-		}
-	?>
-</body>
-</html>

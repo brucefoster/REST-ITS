@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="requestBuilder">
+<head>
+	<meta charset="utf-8" />
+	<meta name="google" value="notranslate" />
+	<title>{title} // restis</title>
+	<link rel="shortcut icon" href="/client/favicon.png" />
+
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="/client/js/plugin.selectbox/js/bootstrap-select.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+	
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="/client/js/plugin.selectbox/css/bootstrap-select.css" />
+	<link rel="stylesheet" href="/client/css/global.css" />
+
+</head>
+<body>
+	<div class="heading">
+		<div class="window"><h1>REST Inspection System <span>&rsaquo; Control Panel</span></h1>
+		</div>
+	</div>
+	<div class="full">
+	<div class="window">
+	<div class="container">
+		<ul class="nav nav-tabs">
+		{tabs}
+		</ul>
+		<div class="tab request-builder" ng-controller="requestNameController" >
+		{content}
+		</div>
+	</div>
+	</div>
+	</div>
+</body>
+</html>

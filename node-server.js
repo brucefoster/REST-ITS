@@ -116,12 +116,11 @@ var handler = require( './nodejs/webpage-handler.js' );
 					var page = require( `./client/${currentPage}.js` );
 					if( typeof page.start == 'function' )
 						page.start( request, response );
-					else
+					else {
 						response.writeHead( 500, { "Content-Type": "text/html" } );
 						response.end( handler.displayHTMLError( 500, `Page you're trying to access is corrupted` ) );
-					try {
-						response.end();
-					} catch( error ) {}
+					}
+					
 				}
 			} );
 		}

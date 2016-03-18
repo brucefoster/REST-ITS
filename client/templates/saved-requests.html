@@ -1,0 +1,114 @@
+<div class="space"></div>
+	<p>
+  <button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus bicon" aria-hidden="true"></span> Create new request</button>
+  <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-list bicon" aria-hidden="true"></span> Create scenario</button>
+</p>
+	<div style="border: solid 1px #DCE4EA;border-radius: 3px;overflow: hidden;">
+		<table class="table table-hover no-bottom-padding">
+			<thead> <tr> 
+			<th style="width: 220px;">Host</th> 
+			<th style="width: 300px;">Description</th> 
+			<th style="width: 200px;">Author</th> 
+			<th style="width: 120px;">Shared</th> 
+			<th style="width: 160px;">Last modified</th> </tr> </thead>
+			<tbody>
+			<tr>
+			<td><span class="glyphicon glyphicon-th-list href" aria-hidden="true"></span> <a href="">localhost:8020</a></td>
+			<td class="gray">Global production server</td>
+			<td class="gray"><span class="glyphicon glyphicon-user href" aria-hidden="true"></span> <a href="">Bruce Foster</a> (you)</td>
+			<td class="blue"><span class="glyphicon glyphicon-ok href" aria-hidden="true"></span> Shared</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+			<tr>
+			<td><span class="glyphicon glyphicon-th-list href" aria-hidden="true"></span> <a href="">vk.com:80</a></td>
+			<td class="gray">Партнерская сеть ВКонтакте</td>
+			<td class="gray"><span class="glyphicon glyphicon-user href" aria-hidden="true"></span> <a href="">Bruce Foster</a> (you)</td>
+			<td class="blue"><span class="glyphicon glyphicon-lock href" aria-hidden="true"></span> Private</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+			<tr>
+			<td><span class="glyphicon glyphicon-th-list href" aria-hidden="true"></span> <a href="">esur-ablack.rhcloud.com:80</a></td>
+			<td class="gray">Тестовый сервер на openshift</td>
+			<td class="gray"><span class="glyphicon glyphicon-user href" aria-hidden="true"></span> <a href="">Bruce Foster</a> (you)</td>
+			<td class="blue"><span class="glyphicon glyphicon-lock href" aria-hidden="true"></span> Private</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			</tbody>
+		</table>
+		</div>
+		<div class="space"></div>
+		<div class="panel panel-default">
+		<div class="panel-heading">Learn how to use <b>restis</b></div>
+  <div class="panel-body small-panel">This page helps you to organaize and share <b>saved requests</b>. Learn on project's wiki how to <ul><li><a href=""><b>share</b> saved requests with your team</a>;</li>
+  <li><a href=""><b>transform</b> saved request into scenarios</a>.</li></ul>
+  </div>
+</div>
+		<br />
+  		<table class="table table-hover">
+			<thead> <tr> <th>Host</th> <th style="width: 280px;">Request name</th> <th>URL</th> <th style="width: 150px;">Date created</th> </tr> </thead>
+			<tbody>
+			<tr>
+			<td>localhost:8020</td>
+			<td><a href="">restis testing</a></td>
+			<td class="gray">http://localhost:8020/index</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			<tr>
+			<td>localhost:8020</td>
+			<td><a href="">testing data gamma</a></td>
+			<td class="gray">http://localhost:8020/righthere/correct</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			<tr>
+			<td>localhost:8020</td>
+			<td><a href="">accessing some shit stuff</a></td>
+			<td class="gray">http://localhost:8020/index</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			<tr>
+			<td>localhost:8020</td>
+			<td><a href="">restis testing</a></td>
+			<td class="gray">http://localhost:8020/index</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			<tr>
+			<td>localhost:8020</td>
+			<td><a href="">testing data gamma</a></td>
+			<td class="gray">http://localhost:8020/righthere/correct</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			<tr>
+			<td>localhost:8020</td>
+			<td><a href="">accessing some shit stuff</a></td>
+			<td class="gray">http://localhost:8020/index</td>
+			<td>3/18/2016 2:27pm</td>
+			</tr>
+
+			</tbody>
+		</table>
+
+
+		
+	<div class="modal fade requestErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+	<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="myModalLabel">Error was occurred</h4>
+	  </div>
+	  <div class="modal-body">
+		...
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="runRequest();">Repeat request</button>
+	  </div>
+	</div>
+  </div>
+</div>

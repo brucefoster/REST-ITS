@@ -1,11 +1,6 @@
 module.exports = {
-	render: function() {
-		var fs = require( 'fs' );
-		fs.readFile( './templates/request-master.html', function( error, data ) {
-			if( data ) {
-				return data;
-			} else
-				return 'err';
-		} );
+	start: function( request, response ) {
+		var templater = require( '../nodejs/templater.js' );
+		templater.loadTemplate( 'request-master', 'Test', {}, function( shell ) { response.write( shell ); response.end(); } );
 	}
 };
