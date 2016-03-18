@@ -240,6 +240,32 @@ var handler = require( './nodejs/webpage-handler.js' );
 		}
 	);
 
+	handler.addRule(
+		'^\\/([^\\/]*)$',
+		function( request, response, params ) {
+			var defaultPage = 'index';
+			var currentPage = ( params[ 1 ] === '' ? defaultPage : params[ 1 ] );
+			fs.access( `./client/${currentPage}.js`, fs.R_OK, function( error ) {
+				if( error ) {
+					response.writeHead( 404, { "Content-Type": "text/html" } );
+					response.end( handler.displayHTMLError( 404, `Page you're trying to access does not exist` ) );
+					return;
+				}
+				else {
+					var page = require( `./client/${currentPage}.js` );
+					if( typeof page.start == 'function' )
+						page.start( request, response );
+					else
+						response.writeHead( 500, { "Content-Type": "text/html" } );
+						response.end( handler.displayHTMLError( 500, `Page you're trying to access is corrupted` ) );
+					try {
+						response.end();
+					} catch( error ) {}
+				}
+			} );
+		}
+	);
+
 var server = http.createServer( handler.handleURL );
 server.listen( http_port, function() {
 	console.log( "Server listening on: http://localhost:%s", http_port );

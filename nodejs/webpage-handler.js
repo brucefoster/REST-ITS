@@ -56,13 +56,15 @@ module.exports = {
 
 		// Handling dynamic queries
 		for( regex in $.handlingRules[ 'dynamic' ] ) {
-			console.log( 'HANDLING REGEX: ' + regex );
 			var rgx = new RegExp( regex ); 
-			console.log( 'HANDLING REGEX TEST: ' + rgx.test( url ) );
-			console.log( 'HANDLING REGEX URL: ' + url );
 			if( rgx.test( url ) === true ) {
 				$.handlingRules[ 'dynamic' ][ regex ]( request, response, url.match( rgx ) );
 			}
 		}
+	},
+
+	displayHTMLError( code, message ) {
+		return `<h1>Error ${code}</h1><i>${message}</i><hr />
+			<b>ReSTTIS</b> Server. <a href="//github.com/brucefoster/ReSTTIS/issues">Show known issues on <b>github.com</b></a>`;
 	}
 };
