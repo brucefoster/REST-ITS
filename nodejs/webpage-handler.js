@@ -65,6 +65,6 @@ module.exports = {
 
 	displayHTMLError( code, message ) {
 		return `<h1>Error ${code}</h1><i>${message}</i><hr />
-			<b>ReSTTIS</b> Server. <a href="//github.com/brucefoster/ReSTTIS/issues">Show known issues on <b>github.com</b></a>`;
+			// <b>restis</b> server. <a href="//github.com/brucefoster/restis/issues">Report an issue</a>`;
 	}
 };
