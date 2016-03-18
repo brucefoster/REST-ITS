@@ -49,13 +49,11 @@ module.exports = {
 			`;
 		
 		var result = sp._executeScript( script );
-		var ap = result[ 'assertions' ][ 'passed' ];
-		var af = result[ 'assertions' ][ 'failed' ];
-		var ar = ( ap.length / ( af.length + 1 ) ) * 100;
+		var stats = result[ 'assertions' ][ 'stats' ];
 		response.setHeader( "Content-Type", "text/html; charset=utf-8" );
-		response.write( '<pre style="line-height: 24px;"><h1>Log</h1>' + reportVisualHandler( result[ 'log' ] ) 
-			+ `<hr /><h1>Assertions (${ap.length} passed, ${af.length} failed, rate ${ar}%)</h1><h3>Passed assertions</h3>`
-			+ ap.join( "\r\n" ) + '<h3>Failed assertions</h3>' + af.join( "\r\n" ) + '</pre>' );
+		response.write( '<style type="text/css">code {padding: 2px 4px;color: #c7254e;background-color: #f9f2f4;border-radius: 4px;}</style><pre style="line-height: 24px;"><h1>Log</h1>' + reportVisualHandler( result[ 'log' ] ) 
+			+ `<hr /><h1>Assertions (${stats['passed']} passed, ${stats['failed']} failed, rate ${stats['rate']}%)</h1><h3>Passed assertions</h3>`
+			+ result[ 'assertions' ][ 'passed' ].join( "\r\n" ) + '<h3>Failed assertions</h3>' + result[ 'assertions' ][ 'failed' ].join( "\r\n" ) + '</pre>' );
 		response.end();
 			
 		return;

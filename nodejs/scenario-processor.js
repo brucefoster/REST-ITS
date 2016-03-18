@@ -206,7 +206,12 @@ module.exports = {
 		var _history = [];
 		var _assertions = {
 			passed: [],
-			failed: []
+			failed: [],
+			stats: {
+				passed: 0,
+				failed: 0,
+				rate: 0
+			}
 		};
 		var request = {
 			params: {
@@ -317,6 +322,11 @@ module.exports = {
 			}
 		};
 
+		function getLineCode( line ) {
+			var lines = script.split( "\n" );
+			return lines[ line - 1 ].trim();
+		}
+
 		var assertion = {
 			equal( actual, expected, message ) {
 				var callerId = require( 'caller-id' );
@@ -327,10 +337,14 @@ module.exports = {
 					if( message )
 						_assertions.failed.push( `Assertion failed at line ${line[ 'lineNumber' ]}: ${message}` );
 					else
-						_assertions.failed.push( `Assertion failed at line ${line[ 'lineNumber' ]}: expected "${expected}", got "${actual}"` );
+						_assertions.failed.push( 
+							`Assertion failed at line ${line[ 'lineNumber' ]}: <code>${getLineCode(line[ 'lineNumber' ])}</code>, expected "${expected}", got "${actual}"` 
+						);
 				} else {
 					_history.push( `-s Assertion passed, <u>assertion called at line ${line[ 'lineNumber' ]} of scenario</u>` );
-					_assertions.passed.push( `Assertion passed at line ${line[ 'lineNumber' ]}: expected "${expected}", got "${actual}"` );
+					_assertions.passed.push( 
+						`Assertion passed at line ${line[ 'lineNumber' ]}: <code>${getLineCode(line[ 'lineNumber' ])}</code>, expected "${expected}", got "${actual}"` 
+					);
 				}
 			}
 		};
@@ -343,6 +357,9 @@ module.exports = {
 		};
 
 		eval( script );
+		_assertions.stats.passed = _assertions.passed.length;
+		_assertions.stats.failed = _assertions.failed.length;
+		_assertions.stats.rate = ( _assertions.stats.passed / ( _assertions.stats.passed + _assertions.stats.failed ) * 100 ).toFixed( 0 );
 		return { log: _history.join( "\n" ).toString(), assertions: _assertions };
 	},
 
