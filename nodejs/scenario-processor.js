@@ -7,6 +7,26 @@ Object.prototype.removeItem = function( key ) {
 		this.splice( key, 1 );
 };
 
+Object.defineProperty(global, '__stack', {
+  get: function(){
+    var orig = Error.prepareStackTrace;
+    Error.prepareStackTrace = function(_, stack){ return stack; };
+    var err = new Error;
+    Error.captureStackTrace(err, arguments.callee);
+    var stack = err.stack;
+    Error.prepareStackTrace = orig;
+    return stack;
+  }
+});
+
+Object.defineProperty(global, '__line', {
+  get: function(){
+    return __stack[1].getLineNumber();
+  }
+});
+
+
+
 module.exports = {
 	requestOptions: {
 		method: null,
@@ -179,9 +199,15 @@ module.exports = {
 	_executeScript( script ) {
 		var _request_info = {
 			data: {},
+			headers: {},
+			auth: ''
 		};
 
 		var _history = [];
+		var _assertions = {
+			passed: [],
+			failed: []
+		};
 		var request = {
 			params: {
 				add: function( param, value ) {
@@ -199,7 +225,7 @@ module.exports = {
 					if( !( param in _request_info[ 'data' ] ) )
 						return !_history.push( `-e Failed to REMOVE request param: "${param}" does not exist` + options.getStrictMode() );
 					_request_info[ 'data' ].removeItem( param );
-					_history.push( `[Info] Removed request param: "${param}"` );
+					_history.push( `-i Removed request param: "${param}"` );
 				},
 
 				modify: function( param, value ) {
@@ -208,14 +234,103 @@ module.exports = {
 							return !_history.push( `-e Failed to MODIFY request param: "${param}" does not exist` + options.getStrictMode() );
 						else
 							_history.push( `-n Request param is ADDED instead of MODIFYING: "${param}" does not exist` + options.getStrictMode() );
-					} else _history.push( `-i Modified request param: "${param}" = "${value}", previously was "{$_request_info[ 'data' ][ param ]}"` );
-
+					} else
+						_history.push( `-i Modified request param: "${param}" = "${value}", previously was "${_request_info[ 'data' ][ param ]}"` );
 					_request_info[ 'data' ][ param ] = value;
 				},
 
 				clear: function() {
-					_history.push( `-i Clear all request params: success, {$_request_info[ 'data' ][ param ].length} items deleted` );
+					_history.push( `-i Clear all request params: success, ${Object.keys( _request_info[ 'data' ] ).length} items deleted` );
 					_request_info[ 'data' ] = [];
+				}
+			},
+
+			method: 'GET',
+			url: '',
+
+			auth: {
+				username: null,
+				password: null
+			},
+
+			headers: {
+				add: function( header, value ) {
+					if( header in _request_info[ 'headers' ] ) {
+						if( options.strict === true )
+							return !_history.push( `-e Failed to ADD header: "${header}" is already exists` + options.getStrictMode() );
+						else
+							_history.push( `-n Header was MODIFIED instead of ADDING: "${header}" is already exists` + options.getStrictMode() );
+					} else _history.push( `-i Added header: "${header}: ${value}"` );
+
+					_request_info[ 'headers' ][ header ] = value;
+				},
+
+				delete: function( header ) {
+					if( !( header in _request_info[ 'headers' ] ) )
+						return !_history.push( `-e Failed to REMOVE header: "${header}" does not exist` + options.getStrictMode() );
+
+					_request_info[ 'headers' ].removeItem( header );
+					_history.push( `-i Removed header: "${header}"` );
+				},
+
+				modify: function( header, value ) {
+					if( !( header in _request_info[ 'headers' ] ) ) {
+						if( options.strict === true )
+							return !_history.push( `-e Failed to MODIFY header: "${header}" does not exist` + options.getStrictMode() );
+						else
+							_history.push( `-n Header is ADDED instead of MODIFYING: "${header}" does not exist` + options.getStrictMode() );
+					} else
+						_history.push( `-i Modified header: "${header}" = "${value}", previously was "${_request_info[ 'headers' ][ header ]}"` );
+					_request_info[ 'headers' ][ header ] = value;
+				},
+
+				clear: function() {
+					_history.push( `-i Clear all headers: success, ${Object.keys( _request_info[ 'headers' ] ).length} headers deleted` );
+					_request_info[ 'headers' ] = {};
+				}
+			},
+
+			send: function( response_callback ) {
+				var supported_methods = [
+					'GET', 'POST', 'PUT', 'DELETE'
+				];
+
+				if( this.method === '' )
+					return !_history.push( `-e Unable to send request: request method is not set. Property name: "request.method"` );
+
+				if( this.url === '' )
+					return !_history.push( `-e Unable to send request: destination URL is not set. Property name: "request.url"` );
+
+				if( supported_methods.indexOf( this.method.toUpperCase() ) === -1 )
+					return !_history.push( `-e Unable to send request: selected request method is not supported. Supported methods: ${supported_methods.join( ', ' )}` );
+
+				var data = [];
+				for( param in _request_info[ 'data' ] )
+					data.push( `${param}=${_request_info[ 'data' ][ param ]}` );
+
+				var prc = require( 'processor' );
+				prc.sendRequest(
+					this.url,
+					this.method,
+					_request_info[ 'headers' ].join( "\r\n" )
+				);
+			}
+		};
+
+		var assertion = {
+			equal( actual, expected, message ) {
+				var callerId = require( 'caller-id' );
+				var line = callerId.getData();
+
+				if( actual !== expected ) {
+					_history.push( `-e Assertion failed: expected "${expected}", got "${actual}", <u>assertion called at line ${line[ 'lineNumber' ]} of scenario</u>` );
+					if( message )
+						_assertions.failed.push( `Assertion failed at line ${line[ 'lineNumber' ]}: ${message}` );
+					else
+						_assertions.failed.push( `Assertion failed at line ${line[ 'lineNumber' ]}: expected "${expected}", got "${actual}"` );
+				} else {
+					_history.push( `-s Assertion passed, <u>assertion called at line ${line[ 'lineNumber' ]} of scenario</u>` );
+					_assertions.passed.push( `Assertion passed at line ${line[ 'lineNumber' ]}: expected "${expected}", got "${actual}"` );
 				}
 			}
 		};
@@ -228,7 +343,7 @@ module.exports = {
 		};
 
 		eval( script );
-		return _history.join( "\n" ).toString();
+		return { log: _history.join( "\n" ).toString(), assertions: _assertions };
 	},
 
 	/*
