@@ -32,7 +32,7 @@ module.exports = {
 	/*
 		function callback( bool wasSuccessful, object result )
 	*/
-	handleURL( request, response ) {
+	handleURI( request, response ) {
 		var $ = module.exports;
 		var fs = require( 'fs' );
 
