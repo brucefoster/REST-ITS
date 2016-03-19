@@ -19,8 +19,8 @@
 		</select>
 		<input type="text" class="form-control desturl" ng-model="test" style="display: inline-block;width: 770px;" data-toggle="tooltip" title="Enter destination URL first." placeholder="http://" />
 		<div class="space"></div>
-		
-		<h4 style="font-weight: bold;padding: 10px 0 0 0;margin: 0;">Parameters to send</h4>
+		<div class="area">
+		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;">Parameters to send</h4>
 		<div class="checkbox inline">
 			<label class="raw_show_label">
 				<input type="checkbox" class="raw_show"> Input RAW data manually instead of dataset
@@ -45,13 +45,15 @@
 				</tr>
 			</table>
 			<div class="space-small"></div>
+			<p>
 			<button type="button" class="btn btn-default addparam">Add new parameter</button> - or - 
 			<button type="button" class="btn btn-default converttoraw">Convert to RAW</button>
+			</p>
+		</div>
 		</div>
 
-		<div class="space"></div>
-
-		<h4 style="font-weight: bold;padding: 10px 0 0 0;margin: 0;"><input type="checkbox" class="add_auth" data-toggle="toggle"> HTTP Basic authentication</h4>
+		<div class="area">
+		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;"><input type="checkbox" class="add_auth" data-toggle="toggle"> HTTP Basic authentication</h4>
 		<script type="text/javascript">
 		$(function() {
 			$( '.add_auth' ).change(function() {
@@ -73,18 +75,12 @@
 			<input type="text" class="form-control css_free longinput httpauth_pass" placeholder="HTTP Basic auth password (visible)">
 		  </div>
 		</form>
-
-		<h4 style="font-weight: bold;padding: 10px 0 0 0;margin: 0;"><input type="checkbox" class="add_headers" data-toggle="toggle"> Headers</h4>
+		</div>
+		<div class="area">
+		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;"><input type="checkbox" class="add_headers" data-toggle="toggle"> Custom Headers</h4>
 		<script type="text/javascript">
 		$( ".add_headers" ).bootstrapSwitch();</script>
-		
-
-		<h4 style="font-weight: bold;padding: 10px 0 0 0;margin: 0;"><input type="checkbox" class="add_headers" data-toggle="toggle"> Testing Scenario</h4>
-		<script type="text/javascript">
-		$( ".add_headers" ).bootstrapSwitch();</script>
-		
-
-
+		</div>
 		<div class="space"></div>
 		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Send request</button> 
 		<span class="glyphicon glyphicon-share-alt optionmark enabled" ng-mouseover="redirTooltip( $event )" data-toggle="tooltip" title="Redirections enabled"></span>
