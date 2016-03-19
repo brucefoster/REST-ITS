@@ -1,10 +1,6 @@
 
 		<div class="tab request-builder" ng-controller="requestNameController" >
-		<h3 class="title empty" ng-show="!requestRenameMarker">{{requestName + ' '}}<span ng-click="changeReqName( $event )">[click to change]</span></h3>
-		<form ng-submit="updateName( $event )">
-			<input type="text" ng-name="requestName" ng-blur="updateName( $event )" ng-show="requestRenameMarker" class="title requestTitle empty" placeholder="Untitled Request" />
-			<input type="submit" style="visibility: hidden" />
-		</form>
+		<div class="space"></div>
 
 		<div class="label">URL of REST API provider:</div>
 		<label class="checkbox" style="float: right;vertical-align: top;margin: 0;margin-top: -2px;padding: 0px;font-weight: normal;">
@@ -110,11 +106,14 @@
 		});
 		</script>
 		</div>
-		<div class="space"></div>
 		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Send request</button> 
 		
 		<div style="display: inline-block;"><div class="requestsent csshidden"><span class="glyphicon glyphicon-ok"></span> &nbsp;Done</div></div>
 		<div class="alert alert-danger csshidden request_error_data" role="alert"></div>
+		<div class="caption">
+			<b>Information</b><br />
+			You'll be able to save your request after its execution. If you want to send a plain request (for example, to make Wireshark-followed request), please, <a href="">use plain request editor</a>. To use all features of restis, you can use <a href="">testing scenarios</a>, that allows you to use the whole power of JavaScript to generate dynamic requests.
+		</div>
 		<div class="result_rows csshidden">	
 		<div class="space"></div>
 		<div class="panel panel-default infopanel csshidden">
@@ -148,7 +147,7 @@
 			</div>
 
 			<div class="space-small"></div>
-			<button type="button" class="btn btn-default" onclick="WebPS_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to params</button> &nbsp; 
+			<button type="button" class="btn btn-default" onclick="restis_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to params</button> &nbsp; 
 			<button type="button" class="btn btn-link addparam"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button> &nbsp; 
 			<button type="button" class="btn btn-primary saverequest"><span class="glyphicon glyphicon-floppy-disk"> </span> &nbsp; Save request</button>
 		</div>
@@ -171,7 +170,7 @@
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			<button type="button" class="btn btn-primary" onclick="WebPS_SaveSystem_Save()">Save request</button>
+			<button type="button" class="btn btn-primary" onclick="restis_SaveSystem_Save()">Save request</button>
 		  </div>
 		</div>
 	  </div>
@@ -337,8 +336,8 @@
 			// alert( getHeadersList() );
 			var raw = getPlainRAW();
 			var response = 
-				'webps_rp=true&data=' + 
-				raw.split('&').join('/$webps:s_and/').split('=').join('/$webps:s_eq/') + 
+				'restis_rp=true&data=' + 
+				raw.split('&').join('/$restis:s_and/').split('=').join('/$restis:s_eq/') + 
 				'&url=' + $( '.desturl' ).val() +
 				'&headers=' + getHeadersList() +
 				'&method=' + $( '.selectpicker_method' ).val();
@@ -416,6 +415,8 @@
 				$( '.infopanel' ).slideDown( 100 );
 
 				$( '.headers_response_result' ).slideDown( 100 );
+
+				$( '.caption' ).slideUp( 100 );
 				
 				var HTTPCodes = {
 					200: '<b style="color: green;">200 OK</b>',
@@ -423,10 +424,10 @@
 					500: '<b style="color: darkred;">500 Internal Server Error</b>',
 					401: '<b style="color: red;">401 Not Authorized</b>',
 				};
-				$( '.sent_data pre' ).html( result[ 'request_data' ].split('=').join( '<span style="color: #66B246;padding: 0 2px 0 2px;">=</span>').split('&').join( '<span style="color: #2187B8;padding: 0 2px 0 2px;">&amp;</span>') );
+				$( '.sent_data pre' ).html( result[ 'request_data' ] ? result[ 'request_data' ].split('=').join( '<span style="color: #66B246;padding: 0 2px 0 2px;">=</span>').split('&').join( '<span style="color: #2187B8;padding: 0 2px 0 2px;">&amp;</span>') : '<span style="color: #3396CC;">(empty)</span>' );
 				$( '.sent_data' ).slideDown( 100 );
 				response = response.split( '<' ).join( '&lt;' ).split( '>' ).join( '&gt;' );
-				$( '.request_result pre' ).html( response.length == 0 ? '<span style="color: red;"><b>WebPS</b>: empty response body</span>' : response );
+				$( '.request_result pre' ).html( response.length == 0 ? '<span style="color: red;"><b>restis</b>: empty response body</span>' : response );
 				$( '.time' ).html( result[ 'execution_time' ] );
 				$( '.state' ).html( HTTPCodes[ result[ 'http_status_code' ] ] );
 
@@ -459,38 +460,38 @@
 			return result.join( '-' );
 		}
 
-		function WebPS_Page_BackToTop() {
+		function restis_Page_BackToTop() {
 			$('html, body').animate({
 					scrollTop: $( ".container" ).offset().top
 				}, 320 );
 		}
 
-		function WebPS_Backup_SaveAllData() {
+		function restis_Backup_SaveAllData() {
 			if( typeof( localStorage ) !== "undefined" ) {
 				if( $( '.desturl' ).val() )
-					localStorage.setItem( "webps_apirm_psw_dest", $( '.desturl' ).val() );
-				//alert( localStorage.getItem( "webps_apirm_psw_dest" ) );
-				localStorage.setItem( "webps_apirm_psw_data", ( getPlainRAW() == '=undefined' ? '' : getPlainRAW() ) );
+					localStorage.setItem( "restis_apirm_psw_dest", $( '.desturl' ).val() );
+				//alert( localStorage.getItem( "restis_apirm_psw_dest" ) );
+				localStorage.setItem( "restis_apirm_psw_data", ( getPlainRAW() == '=undefined' ? '' : getPlainRAW() ) );
 			}
 		}
 
-		setInterval( function() { WebPS_Backup_SaveAllData(); }, 1500 );
+		setInterval( function() { restis_Backup_SaveAllData(); }, 1500 );
 
-		function WebPS_Backup_RestoreAllData() {
-			//alert( localStorage.getItem( "webps_apirm_psw_dest" ) );
-			$( '.desturl' ).val( localStorage.getItem( "webps_apirm_psw_dest" ) );
-			if( localStorage.getItem( "webps_apirm_psw_data" ) ) {
-				$( '.raw_data' ).val( localStorage.getItem( "webps_apirm_psw_data" ) );
-				if( localStorage.getItem( "webps_apirm_psw_rawview" ) != false )
+		function restis_Backup_RestoreAllData() {
+			//alert( localStorage.getItem( "restis_apirm_psw_dest" ) );
+			$( '.desturl' ).val( localStorage.getItem( "restis_apirm_psw_dest" ) );
+			if( localStorage.getItem( "restis_apirm_psw_data" ) ) {
+				$( '.raw_data' ).val( localStorage.getItem( "restis_apirm_psw_data" ) );
+				if( localStorage.getItem( "restis_apirm_psw_rawview" ) != false )
 					$( '.converttoparams' ).click();
 			}
 		}
 
-		function WebPS_Backup_CheckDataAvailable() {
-			WebPS_Backup_RestoreAllData();
+		function restis_Backup_CheckDataAvailable() {
+			restis_Backup_RestoreAllData();
 		}
 
-		$( document ).ready( function() { WebPS_Backup_CheckDataAvailable(); } );
+		$( document ).ready( function() { restis_Backup_CheckDataAvailable(); } );
 
 		$( '.selectpicker_method' ).selectpicker();
 	</script>
