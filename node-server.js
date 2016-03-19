@@ -64,7 +64,7 @@ var handler = require( './nodejs/webpage-handler.js' );
 					req.sendRequest(
 						post_data[ 'url' ],
 						post_data[ 'method' ],
-						'',
+						post_data[ 'headers' ],
 						post_data[ 'auth' ],
 						request_data,
 						function( result ) {

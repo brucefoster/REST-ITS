@@ -1,3 +1,12 @@
+Object.extend = function( destination, source ) {
+	for ( var property in source ) {
+		if ( source.hasOwnProperty( property ) ) {
+			destination[ property ] = source[ property ];
+		}
+	}
+	return destination;
+};
+
 module.exports = {
 	sendRequest: function( plain_url, method, headers, auth, data, callback ) {
 		var querystring = require( 'querystring' );
@@ -5,6 +14,7 @@ module.exports = {
 		var url = require( 'url' );
 
 		var url_parsed = url.parse( plain_url );
+		var headers = JSON.parse( headers );
   		var request_options  = {
 			host: url_parsed.hostname,
 			port: url_parsed.port,
@@ -15,6 +25,8 @@ module.exports = {
 				'Content-Length': Buffer.byteLength( data )
 			}
 		};
+
+		request_options.headers = Object.extend( request_options.headers, headers );
 
 		var debug = require( './debugger' );
 		debug.runDebug();

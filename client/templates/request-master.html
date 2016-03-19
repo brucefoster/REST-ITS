@@ -78,13 +78,41 @@
 		</div>
 		<div class="area">
 		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;"><input type="checkbox" class="add_headers" data-toggle="toggle"> Custom Headers</h4>
+		<div class="customheaders">
+			<div class="dataset">
+			<table class="headers" style="width: 100%;margin-top: -20px;">
+				<tr>
+					<td style="width: 35%;"></td>
+					<td style="width: 60%;"></td>
+					<td style="width: 5%;"></td>
+				</tr>
+				<tr>
+					<td><input type="text" class="form-control" placeholder="header" /></td>
+					<td><input type="text" class="form-control" placeholder="value" /></td>
+					<td><button type="button" class="btn btn-danger" onclick="deleteParam(this)">Delete</button></td>
+				</tr>
+			</table>
+			<div class="space-small"></div>
+			<p>
+			<button type="button" class="btn btn-default addheader">Add new header</button>
+			</p>
+		</div>
+		</div>
 		<script type="text/javascript">
-		$( ".add_headers" ).bootstrapSwitch();</script>
+		$(function() {
+			$( '.add_headers' ).change(function() {
+				if( $( this ).prop( 'checked' ) == true ) {
+					$( '.customheaders' ).slideDown( 200 );
+				} else {
+					$( '.customheaders' ).slideUp( 150 );
+				}
+			});
+		});
+		</script>
 		</div>
 		<div class="space"></div>
 		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Send request</button> 
-		<span class="glyphicon glyphicon-share-alt optionmark enabled" ng-mouseover="redirTooltip( $event )" data-toggle="tooltip" title="Redirections enabled"></span>
-		<span class="glyphicon glyphicon-lock optionmark" ng-mouseover="redirTooltip( $event )" data-toggle="tooltip" title="Authentication disabled"></span>
+		
 		<div style="display: inline-block;"><div class="requestsent csshidden"><span class="glyphicon glyphicon-ok"></span> &nbsp;Done</div></div>
 		<div class="alert alert-danger csshidden request_error_data" role="alert"></div>
 		<div class="result_rows csshidden">	
@@ -197,6 +225,7 @@
 		} );
 
 		var newParam = '<tr>' + ( $( '.params tr:eq(1)' ).html() ) + '</tr>';
+		var newHeader = '<tr>' + ( $( '.headers tr:eq(1)' ).html() ) + '</tr>';
 
 		$( '.params tr:eq(1)' ).remove();
 		$( '.raw_show' ).click( function() {
@@ -211,6 +240,11 @@
 
 		$( '.addparam' ).click( function() {
 			$( '.params' ).append( newParam );
+			//$( '.converttoparams' ).prop( 'disabled', true );
+		} );
+
+		$( '.addheader' ).click( function() {
+			$( '.headers' ).append( newHeader );
 			//$( '.converttoparams' ).prop( 'disabled', true );
 		} );
 
@@ -281,12 +315,32 @@
 			return raw;
 		}
 
+		function getHeadersList() {
+			if( $( '.add_headers' ).prop( 'checked' ) !== true )
+				return JSON.stringify( {} );
+			headersObj = {};
+			lastKey = null;
+			$.each( $( '.headers tr td input' ), function( index, obj ) {
+				value = ( $( obj ).val() );
+				if( lastKey === null ) {
+					lastKey = value;
+				} else {
+					headersObj[ lastKey ] = value;
+					lastKey = null;
+				}
+			} );
+
+			return JSON.stringify( headersObj );
+		}
+
 		function prepareParams() {
+			// alert( getHeadersList() );
 			var raw = getPlainRAW();
 			var response = 
 				'webps_rp=true&data=' + 
 				raw.split('&').join('/$webps:s_and/').split('=').join('/$webps:s_eq/') + 
 				'&url=' + $( '.desturl' ).val() +
+				'&headers=' + getHeadersList() +
 				'&method=' + $( '.selectpicker_method' ).val();
 			if( $( '.add_auth' ).prop( 'checked' ) == true ) {
 				response += '&auth=' + $( '.httpauth_user' ).val() + '~$$' + $( '.httpauth_pass' ).val();

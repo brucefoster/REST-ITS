@@ -2,7 +2,7 @@ module.exports = {
 	loadTemplate: function( dest_template, title, replaces, callback ) {
 		var fs = require( 'fs' );
 		var shell = '';
-		var build = '0.3.7';
+		var build = '0.3.7 (prototype)';
 		var menu_items = {
 			'/': 'Request Master',
 			'/plain': 'Plain request editor',

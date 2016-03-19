@@ -398,3 +398,10 @@ html,body {
 			margin: 15px 0 0 75px;
 			border-left: solid 3px #EEEEEE;
 		}
+
+		.customheaders {
+			display: none;
+			padding: 10px 0 0px 25px;
+			margin: 15px 0 0 75px;
+			border-left: solid 3px #EEEEEE;
+		}
