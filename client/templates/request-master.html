@@ -40,11 +40,26 @@
 					<td><button type="button" class="btn btn-danger" onclick="deleteParam(this)">Delete</button></td>
 				</tr>
 			</table>
-			<div class="space-small"></div>
-			<p>
-			<button type="button" class="btn btn-default addparam">Add new parameter</button> - or - 
+			<hr />
+			<button type="button" class="btn btn-default addparam">Add parameter</button> - or - 
 			<button type="button" class="btn btn-default converttoraw">Convert to RAW</button>
-			</p>
+			<div style="display: inline-block;">
+			<div class="option">Spaces (in values): </div>
+			<select name="method" class="selectpicker_method" data-width="auto">
+			<option value="GET" selected>Don't ignore</option>
+			<option value="POST" >Ignore</option>
+		</select>
+			<div class="option">Trim spaces: </div>
+			<select name="method" class="selectpicker_method" data-width="auto">
+			<option value="GET" selected>Off</option>
+			<option value="POST" >On</option>
+		</select>
+			<div class="option">File upload: </div>
+			<select name="method" disabled class="selectpicker_method" data-width="auto">
+			<option value="GET" selected>Off</option>
+			<option value="POST" >On</option>
+		</select>
+		</div>
 		</div>
 		</div>
 

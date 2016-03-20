@@ -53,7 +53,7 @@ var handler = require( './nodejs/webpage-handler.js' );
 
 					// Now we know all the params, let's work
 					var req = require( './nodejs/processor' );
-					var request_data = post_data[ 'data' ].split( '/$webps:s_and/' ).join( '&' ).split( '/$webps:s_eq/' ).join( '=' );
+					var request_data = post_data[ 'data' ].split( '/$restis:s_and/' ).join( '&' ).split( '/$restis:s_eq/' ).join( '=' );
 					if( post_data[ 'method' ] == 'GET' ) {
 						var original_url = url.parse( post_data[ 'url' ], true );
 						var query = original_url[ 'query' ];
