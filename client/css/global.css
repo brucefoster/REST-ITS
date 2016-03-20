@@ -425,6 +425,18 @@ h4 {
 	font-family: Roboto;
 }
 
+pre div {
+	font-family: inherit !important;
+}
+
+pre {
+	line-height: 20px;
+}
+
+.header-name {
+	font-weight: bold; width: 180px;display: inline-block;
+}
+
 .httpauth_user {
 	margin-left: 10px;
 }

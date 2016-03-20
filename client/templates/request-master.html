@@ -151,7 +151,7 @@
 				<div class="space-small"></div>
 				<pre></pre>
 			</div>
-			<div class="csshidden request_result" style="max-width: 879px;">
+			<div class="csshidden request_result" style="max-width: 939px;">
 				<div class="space"></div>
 				<div class="label">Response: &nbsp; &nbsp; 
 				<span class="glyphicon glyphicon-time"></span>&nbsp; got in <span class="time"></span>s  
@@ -414,7 +414,7 @@
 				$( '.headers_request_result pre' ).html( '' );
 				for( header in result[ 'request_headers' ] ) {
 					$( '.headers_request_result pre' ).append( 
-						'<div style="font-weight: bold; width: 180px;display: inline-block;">' + 
+						'<div class="header-name">' + 
 						_formatHeader( header ) + ': </div>' + result[ 'request_headers' ][ header ] + '<br />' );
 				}
 				$( '.headers_request_result' ).slideDown( 100 );
@@ -423,7 +423,7 @@
 				$( '.headers_response_result pre' ).html( '' );
 				for( header in result[ 'response_headers' ] ) {
 					$( '.headers_response_result pre' ).append( 
-						'<div style="font-weight: bold; width: 180px;display: inline-block;">' + 
+						'<div class="header-name">' + 
 						_formatHeader( header ) + ': </div>' + result[ 'response_headers' ][ header ] + '<br />' );
 				}
 				$( '.infopanel .panel-body' ).html( '<code style="font-size: 18px;font-weight: bold;margin-right: 5px;">' + $( '.selectpicker_method' ).val() + '</code>' + ' <samp> ' + $( '.desturl' ).val() + '</samp>' );
