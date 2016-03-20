@@ -1,7 +1,8 @@
 ## REST API Inspection System (restis)
 #### Inspect and monitor your REST APIs locally & build testing scenarios
 This Node.JS-based script is designed to inspect & monitor REST APIs with local mashine and has following features:
-* Check and test your REST APIs behavior with built-in Request Master and save them for later;
+* Check and test your REST APIs behavior with built-in Request Master ~~and save them for later~~;
+* Send plain HTTP requests in few clicks;
 * ~~Write automated testing scenarios with simple scripting language;~~
 * ~~Schedule automatic inspections and receive notifications with results;~~
 * ~~Build complex test scenarios and immediately run them;~~
