@@ -417,6 +417,29 @@ td {
 	line-height: 34px;
 }
 
+.info {
+	font: 13px/24px Roboto;
+	color: #909090;
+	margin: 10px 0 0px 0;
+	text-align: justify;
+}
+
+.info .icon {
+	float: left;
+	margin-right: 18px;
+}
+
+.info .icon span {
+	color: #EEEEEE;
+	font-size: 60px;
+	vertical-align: middle;
+	margin-top: 14px;
+}
+
+.info b {
+	line-height: 34px;
+}
+
 h4 {
 	font-size: 16px;
 }
@@ -451,6 +474,25 @@ pre {
 	vertical-align: middle;
 }
 
+.option.nopadding {
+	padding: 0px 10px 0px 0px !important;
+}
+
 .option:first-child {
 	padding: 0px 10px 0px 20px;
+}
+
+.CodeMirror {
+	border: solid 1px #DDDDDD;
+	border-radius: 4px;
+	font-family: Lucida Console !important;
+}
+
+.CodeMirror div, .CodeMirror-code div, .CodeMirror-line * {
+	font-family: Lucida Console !important;
+	font-size: 12px;
+}
+
+.CodeMirror-linenumber {
+	text-align: center !important;
 }

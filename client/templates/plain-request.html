@@ -1,53 +1,31 @@
-
-		<div class="tab request-builder" ng-controller="requestNameController" >
+		<link rel="stylesheet" type="text/css" href="/client/codemirror/codemirror.css" />
+		<script type="text/javascript" src="/client/codemirror/codemirror.js"></script>
+		<script type="text/javascript" src="/client/codemirror/mode/http/http.js"></script>
+		<div class="tab">
 		<div class="space"></div>
-
-		<div class="label">URL of REST API provider:</div>
-		<label class="checkbox" style="float: right;vertical-align: top;margin: 0;margin-top: -2px;padding: 0px;font-weight: normal;">
-					<input type="checkbox" class="showrequestheaders"> Follow redirections
-				</label>
-		<br />
-		<select name="method" class="selectpicker_method" data-width="auto">
-			<option value="GET" selected>GET Request</option>
-			<option value="POST" >POST Request</option>
-			<option value="d" >DELETE Request</option>
-			<option value="pu" >PUT Request</option>
-		</select>
-		<input type="text" class="form-control desturl" ng-model="test" style="display: inline-block;width: 770px;" data-toggle="tooltip" title="Enter destination URL first." placeholder="http://" />
+		<div class="info">
+			<div class="icon"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+			<b>Information about plain HTTP request editor</b><br />
+		  	Welcome to plain HTTP request editor! Using this tool you can send plain HTTP requests without any additional actions. Just paste (if you'd like to write requests manually, <a href="">try out scenario editor instead</a>) your HTTP request into textarea below and press "send". That's all you need.
+		</div>
+		<div class="space"></div>
+		<textarea class="plain-request" id="prc"></textarea>
+		<script type="text/javascript">
+		var editor = CodeMirror.fromTextArea( document.getElementById( 'prc' ), {
+			lineNumbers: true,
+			autofocus: true,
+			lineWrapping: true
+		});
+</script>
 		<div class="space"></div>
 		<div class="area">
-		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;">Parameters to send</h4>
-		<div class="checkbox inline">
-			<label class="raw_show_label">
-				<input type="checkbox" class="raw_show"> Input RAW data manually instead of dataset
-			</label>
-		</div>
-		<div class="raw csshidden">
-			<textarea class="form-control raw_data" placeholder="param1=value1&amp;param2=value2 etc."></textarea>
-			<div class="space-small"></div>
-			<button type="button" class="btn btn-default converttoparams">Convert to params</button>
-		</div>
-		<div class="dataset">
-			<table class="params" style="width: 100%;margin-top: -20px;">
-				<tr>
-					<td style="width: 35%;"></td>
-					<td style="width: 60%;"></td>
-					<td style="width: 5%;"></td>
-				</tr>
-				<tr>
-					<td><input type="text" class="form-control" placeholder="parameter" /></td>
-					<td><input type="text" class="form-control" placeholder="value" /></td>
-					<td><button type="button" class="btn btn-danger" onclick="deleteParam(this)">Delete</button></td>
-				</tr>
-			</table>
-			<hr />
-			<button type="button" class="btn btn-default addparam">Add parameter</button> - or - 
-			<button type="button" class="btn btn-default converttoraw">Convert to RAW</button>
+		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;">Settings</h4>
+		<div class="space-small"></div>
 			<div style="display: inline-block;">
-			<div class="option">Spaces (in values): </div>
+			<div class="option nopadding">Save request in history: </div>
 			<select name="method" class="selectpicker_method" data-width="auto">
-			<option value="GET" selected>Don't ignore</option>
-			<option value="POST" >Ignore</option>
+			<option value="GET" selected>Save</option>
+			<option value="POST" >Dont'save</option>
 		</select>
 			<div class="option">Trim spaces: </div>
 			<select name="method" class="selectpicker_method" data-width="auto">
@@ -61,78 +39,12 @@
 		</select>
 		</div>
 		</div>
-		</div>
 
-		<div class="area">
-		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;"><input type="checkbox" class="add_auth" data-toggle="toggle"> HTTP Basic authentication</h4>
-		<script type="text/javascript">
-		$(function() {
-			$( '.add_auth' ).change(function() {
-				if( $( this ).prop( 'checked' ) == true ) {
-					$( '.httpauth' ).slideDown( 200 );
-				} else {
-					$( '.httpauth' ).slideUp( 150 );
-				}
-			});
-		});
-		</script>
-		<form class="httpauth">
-		  <div class="form-group ">
-			<label>Username: </label>
-			<input type="text" class="form-control css_free longinput httpauth_user" placeholder="HTTP Basic auth login">
-		  </div>
-		  <div class="form-group">
-			<label>Password: </label>
-			<input type="text" class="form-control css_free longinput httpauth_pass" placeholder="HTTP Basic auth password (visible)">
-		  </div>
-		  <div class="info">
-		  	<b>Information about HTTP Basic authentication</b><br />
-		  	Once "HTTP Basic authentication" option is switched on, it does not matter have you filled out "username and "password" fields or not, request will be send with empty fields in "Authentication" header. Switch option off to prevent such behavior.
-		  </div>
-		</form>
-		</div>
-		<div class="area">
-		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;"><input type="checkbox" class="add_headers" data-toggle="toggle"> Custom Headers</h4>
-		<div class="customheaders">
-			<div class="dataset">
-			<table class="headers" style="width: 100%;margin-top: -20px;">
-				<tr>
-					<td style="width: 35%;"></td>
-					<td style="width: 60%;"></td>
-					<td style="width: 5%;"></td>
-				</tr>
-				<tr>
-					<td><input type="text" class="form-control" placeholder="header" /></td>
-					<td><input type="text" class="form-control" placeholder="value" /></td>
-					<td><button type="button" class="btn btn-danger" onclick="deleteParam(this)">Delete</button></td>
-				</tr>
-			</table>
-			<div class="space-small"></div>
-			<p>
-			<button type="button" class="btn btn-default addheader">Add new header</button>
-			</p>
-		</div>
-		</div>
-		<script type="text/javascript">
-		$(function() {
-			$( '.add_headers' ).change(function() {
-				if( $( this ).prop( 'checked' ) == true ) {
-					$( '.customheaders' ).slideDown( 200 );
-				} else {
-					$( '.customheaders' ).slideUp( 150 );
-				}
-			});
-		});
-		</script>
-		</div>
-		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Send request</button> 
+		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Send plain request</button> 
 		
 		<div style="display: inline-block;"><div class="requestsent csshidden"><span class="glyphicon glyphicon-ok"></span> &nbsp;Done</div></div>
 		<div class="alert alert-danger csshidden request_error_data" role="alert"></div>
-		<div class="caption">
-			<b>Information</b><br />
-			You'll be able to save your request after its execution. If you want to send a plain request (for example, to make Wireshark-followed request), please, <a href="">use plain request editor</a>. To use all features of restis, you can use <a href="">testing scenarios</a>, that allows you to use the whole power of JavaScript to generate dynamic requests.
-		</div>
+
 		<div class="result_rows csshidden">	
 		<div class="space"></div>
 		<div class="panel panel-default infopanel csshidden">
