@@ -37,7 +37,7 @@ module.exports = {
 			request_options.headers[ 'Authorization' ] = "Basic " + new Buffer( login_data[ 0 ] + ":" + login_data[ 1 ] ).toString( "base64" );
 		}
 
-		var response = {};
+		var response = { data: '' };
   		var sent_reqest = http.request( request_options, function( res ) {
 			res.setEncoding( 'utf8' );
  			
@@ -46,7 +46,11 @@ module.exports = {
  			response.httpStatusCode = res.statusCode;
  			response.errorCode = null;
 			res.on( 'data', function ( chunk ) {
-	   			response.data = chunk;
+	   			response.data += chunk;
+	   			
+			} );
+
+			res.on( 'end', function () {
 	   			response.executionTime = debug.getExecutionTime();
 	   			try {
 					callback( response );

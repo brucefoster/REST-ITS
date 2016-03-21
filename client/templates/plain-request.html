@@ -50,37 +50,18 @@
 		<div class="panel panel-default infopanel csshidden">
 		<div class="panel-body">
 		</div></div>
-			<div class="csshidden headers_request_result">
-				<div class="label">Request headers:</div>
-				<div class="space-small"></div>
-				<pre></pre>
-			</div>
-			<div class="csshidden headers_response_result">
-				<div class="space"></div>
-				<div class="label">Response headers:</div>
-				<div class="space-small"></div>
-				<pre></pre>
-			</div>
-			<div class="csshidden sent_data">
-				<div class="space"></div>
-				<div class="label">Sent data (RAW):</div>
-				<div class="space-small"></div>
-				<pre></pre>
-			</div>
 			<div class="csshidden request_result" style="max-width: 939px;">
 				<div class="space"></div>
-				<div class="label">Response: &nbsp; &nbsp; 
-				<span class="glyphicon glyphicon-time"></span>&nbsp; got in <span class="time"></span>s  
-				&nbsp; &nbsp; <span class="glyphicon glyphicon-hdd"></span>&nbsp; status: <span class="state"></span> 
+				<div class="label">HTTP Response: &nbsp; &nbsp; 
+				<span class="glyphicon glyphicon-time"></span>&nbsp; got in <span class="time"></span>s
 				</div>
 				<div class="space-small"></div>
 				<pre></pre>
 			</div>
 
 			<div class="space-small"></div>
-			<button type="button" class="btn btn-default" onclick="restis_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to params</button> &nbsp; 
-			<button type="button" class="btn btn-link addparam"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button> &nbsp; 
-			<button type="button" class="btn btn-primary saverequest"><span class="glyphicon glyphicon-floppy-disk"> </span> &nbsp; Save request</button>
+			<button type="button" class="btn btn-default" onclick="restis_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to request editor</button> &nbsp; 
+			<button type="button" class="btn btn-link addparam"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button>
 		</div>
 	</div>
 	
@@ -126,172 +107,71 @@
 	  </div>
 	
 	<script type="text/javascript">
-		var app = angular.module( 'requestBuilder', [] );
-		app.controller( 'requestNameController', function( $scope ) {
-			$scope.requestName = "Untitled Request";
-			$scope.requestRenameMarker = false;
-
-			$scope.changeReqName = function(clickEvent) {
-				$scope.requestRenameMarker = true;
-				setTimeout( function() { $( '.requestTitle' ).focus() }, 20 );
-	  		}
-
-			$scope.updateName = function(clickEvent) {
-				if( $( '.requestTitle' ).val() ) {
-					$scope.requestName = $( '.requestTitle' ).val();
-					$scope.requestRenameMarker = false;
-					$( 'h3.title' ).css( { color: '#337AB7' } );
-				} else {
-					$scope.requestName = "Still Untitled Request";
-					$scope.requestRenameMarker = false;
-				}
-				return false;
-	  		}
-
-			$scope.redirTooltip = function( obj ) {
-				$( obj.target ).tooltip('show');
-				return false;
-	  		}
-		} );
-
-		var newParam = '<tr>' + ( $( '.params tr:eq(1)' ).html() ) + '</tr>';
-		var newHeader = '<tr>' + ( $( '.headers tr:eq(1)' ).html() ) + '</tr>';
-
-		$( '.params tr:eq(1)' ).remove();
-		$( '.raw_show' ).click( function() {
-			if( $( '.raw_show' ).is( ':checked' ) ) {
-				$( '.raw' ).slideDown( 100 );
-				$( '.dataset' ).slideUp( 100 );
-			} else {
-				$( '.dataset' ).slideDown( 100 );
-				$( '.raw' ).slideUp( 100 );
-			}
-		});
-
-		$( '.addparam' ).click( function() {
-			$( '.params' ).append( newParam );
-			//$( '.converttoparams' ).prop( 'disabled', true );
-		} );
-
-		$( '.addheader' ).click( function() {
-			$( '.headers' ).append( newHeader );
-			//$( '.converttoparams' ).prop( 'disabled', true );
-		} );
-
-
-		$( '.saverequest' ).click( function() {
-			$( '.saveRequest' ).modal( 'show' );
-		} );
-
-
-		$( '.converttoraw' ).click( function() {
-			raw = '';
-			valueTime = false;
-			$.each( $( '.params tr td input' ), function( index, obj ) {
-				value = ( $( obj ).val() );
-				if( valueTime === false ) {
-					raw += ( raw === '' ? '' : '&' ) + value;
-					valueTime = true;
-				} else {
-					raw += '=' + value;
-					valueTime = false;
-				}
-				$( '.raw_data' ).val( raw );
-				$( '.raw_show' ).prop( 'checked', true );
-				$( '.raw' ).slideDown( 100 );
-				$( '.dataset' ).slideUp( 100 );
-			} );
-			$( '.raw_show_label' ).prop( 'disabled', true );
-			$( '.raw_show' ).prop( 'disabled', true );
-		} );
-
-		$( '.converttoparams' ).click( function() {
-			$( '.params tr:not(:eq(0))' ).remove();
-			val = $( '.raw_data' ).val().toString();
-			$.each( val.split( '&' ), function( index, obj ) {
-				param = obj.toString().split( '=' )[ 0 ];
-				val = obj.toString().split( '=' )[ 1 ];
-				$( '.params' ).append( newParam.replace( 'ter"', 'ter" value="' + param + '"').replace( 'ue"', 'ue" value="' + val + '"') );
-				
-			} );
-			$( '.raw_show_label' ).prop( 'disabled', true );
-			$( '.raw_show' ).prop( 'disabled', true );
-			$( '.raw_show' ).prop( 'checked', false );
-				$( '.dataset' ).slideDown( 100 );
-				$( '.raw' ).slideUp( 100 );
-		} );
-
-		function deleteParam( row ) {
-			$( row ).parent().parent().remove();
-		}
-
-		function getPlainRAW() {
-			raw = '';
-			if( $( '.raw_show' ).is( ':checked' ) ) {
-				raw = $( '.raw_data' ).val().toString();
-			} else {
-				valueTime = false;
-				$.each( $( '.params tr td input' ), function( index, obj ) {
-					value = ( $( obj ).val() );
-					if( valueTime === false ) {
-						raw += ( raw === '' ? '' : '&' ) + value;
-						valueTime = true;
-					} else {
-						raw += '=' + value;
-						valueTime = false;
-					}
-				} );
-			}
-			return raw;
-		}
-
-		function getHeadersList() {
-			if( $( '.add_headers' ).prop( 'checked' ) !== true )
-				return JSON.stringify( {} );
-			headersObj = {};
-			lastKey = null;
-			$.each( $( '.headers tr td input' ), function( index, obj ) {
-				value = ( $( obj ).val() );
-				if( lastKey === null ) {
-					lastKey = value;
-				} else {
-					headersObj[ lastKey ] = value;
-					lastKey = null;
-				}
-			} );
-
-			return JSON.stringify( headersObj );
-		}
-
-		function prepareParams() {
-			// alert( getHeadersList() );
-			var raw = getPlainRAW();
-			var response = 
-				'restis_rp=true&data=' + 
-				raw.split('&').join('/$restis:s_and/').split('=').join('/$restis:s_eq/') + 
-				'&url=' + $( '.desturl' ).val() +
-				'&headers=' + getHeadersList() +
-				'&method=' + $( '.selectpicker_method' ).val();
-			if( $( '.add_auth' ).prop( 'checked' ) == true ) {
-				response += '&auth=' + $( '.httpauth_user' ).val() + '~$$' + $( '.httpauth_pass' ).val();
-			}
-			// alert( response );
-			return response;
-		}
-
 		var responseWindowShown = false;
 		function runRequest() {
+			var request = editor.getValue().trim();
+			var method = '';
+			var supported_methods = [
+				'post', 'get', 'put', 'delete'
+			];
+			var request_lines = request.split( "\n" );
+			var request_info = request_lines[ 0 ].split( ' ' );
+
+			if( supported_methods.indexOf( request_info[ 0 ].toLowerCase() ) === -1 ) {
+				$( '.requestErrorModal' ).modal( 'show' );
+				$( '.requestErrorModal .modal-body' ).html( '' );
+				$( '.requestErrorModal .modal-body' ).append( '<div style="display: inline-block;width: 150px;line-height: 24px;font-weight: bold;">Error name:</div>' + '<code>HTTP method is not supported</code><br />' );
+				$( '.requestErrorModal .modal-body' ).append( 
+					'<div style="display: inline-block;width: 150px;line-height: 24px;font-weight: bold;vertical-align: top;">Error description:</div>' + 
+					'<samp style="display: inline-block;width: 380px;vertical-align: top;padding-top: 3px;">Unfortunately, restis currently doesn\'t support \'' + request_info[ 0 ] + '\' HTTP method.</samp>' 
+				);
+					
+				$btn.button( 'reset' );
+				return;
+			} else
+				method = request_info[ 0 ].toUpperCase();
+
+			var host = '';
+			var path = request_info[ 1 ];
+			var headers = {};
+			var data = '';
+			request_lines = request_lines.slice( 1 );
+
+			for( line in request_lines ) {
+				if( request_lines[ line ] === '' )
+					data = false;
+
+				if( data !== false ) {
+					var delimiter = request_lines[ line ].split( ':', 2 );
+					switch( delimiter[ 0 ].toLowerCase() ) {
+						case 'host':
+							host = delimiter[ 1 ].trim();
+							break;
+
+						default:
+							headers[ delimiter[ 0 ] ] = delimiter[ 1 ].trim();
+							break;
+					}
+				} else {
+					data = request_lines[ line ];
+				}
+			} 
+
 			var $btn = $( '.sendrequst' ).button( 'loading' );
-			if( $( '.desturl' ).val().length == 0 ) {
-				$( '.desturl' ).tooltip('show');
-				return false;
-			}
+			var url = 'http://' + host + path;
+
+			var request = 
+				'restis_rp=true&data=' + 
+				data.split('&').join('/$restis:s_and/').split('=').join('/$restis:s_eq/') + 
+				'&url=' + url +
+				'&headers=' + JSON.stringify( headers ) +
+				'&method=' + method;
 
 			if( responseWindowShown ) {
 				$( '.result_rows' ).fadeTo( 100, 0.2 );
 			}
 
-			$.post( "/send", prepareParams(), function( data ) {
+			$.post( "/send", request, function( data ) {
 				result = JSON.parse( data );
 
 				/*
@@ -309,11 +189,7 @@
 						'<samp style="display: inline-block;width: 380px;vertical-align: top;padding-top: 3px;">' + result[ 'error_description' ] + 
 						'</samp>' 
 					);
-					/*$( '.request_error_data' ).html( '<b>Error: </b>' + result[ 'error' ] );
-					$( '.request_error_data' ).slideDown( 200 );
-					$('html, body').animate({
-						scrollTop: $( ".request_result" ).offset().top
-					}, 620 );*/
+
 					$btn.button( 'reset' );
 					return;
 				}
@@ -327,7 +203,7 @@
 
 				$( '.result_rows' ).slideDown( 100 );
 
-				$( '.headers_request_result pre' ).html( '' );
+				/*$( '.headers_request_result pre' ).html( '' );
 				for( header in result[ 'request_headers' ] ) {
 					$( '.headers_request_result pre' ).append( 
 						'<div class="header-name">' + 
@@ -343,11 +219,7 @@
 						_formatHeader( header ) + ': </div>' + result[ 'response_headers' ][ header ] + '<br />' );
 				}
 				$( '.infopanel .panel-body' ).html( '<code style="font-size: 18px;font-weight: bold;margin-right: 5px;">' + $( '.selectpicker_method' ).val() + '</code>' + ' <samp> ' + $( '.desturl' ).val() + '</samp>' );
-				$( '.infopanel' ).slideDown( 100 );
-
-				$( '.headers_response_result' ).slideDown( 100 );
-
-				$( '.caption' ).slideUp( 100 );
+				$( '.infopanel' ).slideDown( 100 );*/
 				
 				var HTTPCodes = {
 					200: '<b style="color: green;">200 OK</b>',
@@ -355,12 +227,17 @@
 					500: '<b style="color: darkred;">500 Internal Server Error</b>',
 					401: '<b style="color: red;">401 Not Authorized</b>',
 				};
-				$( '.sent_data pre' ).html( result[ 'request_data' ] ? result[ 'request_data' ].split('=').join( '<span style="color: #66B246;padding: 0 2px 0 2px;">=</span>').split('&').join( '<span style="color: #2187B8;padding: 0 2px 0 2px;">&amp;</span>') : '<span style="color: #3396CC;">(empty)</span>' );
-				$( '.sent_data' ).slideDown( 100 );
+				
+
 				response = response.split( '<' ).join( '&lt;' ).split( '>' ).join( '&gt;' );
-				$( '.request_result pre' ).html( response.length == 0 ? '<span style="color: red;"><b>restis</b>: empty response body</span>' : response );
+				$( '.request_result pre' ).html( '' );
+				$( '.request_result pre' ).append( 'HTTP/1.1 ' + result[ 'http_status_code' ] + "<br />" );
+				for( header in result[ 'response_headers' ] ) {
+					$( '.request_result pre' ).append( _formatHeader( header ) + ': ' + result[ 'response_headers' ][ header ] + "<br />" );
+				}
+				$( '.request_result pre' ).append( '<br />' );
+				$( '.request_result pre' ).append( response.length == 0 ? '<span style="color: red;"><b>restis</b>: empty response body</span>' : response );
 				$( '.time' ).html( result[ 'execution_time' ] );
-				$( '.state' ).html( HTTPCodes[ result[ 'http_status_code' ] ] );
 
 
 				if( responseWindowShown === false ) {
