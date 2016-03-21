@@ -474,6 +474,10 @@ pre {
 	vertical-align: middle;
 }
 
+pre span {
+	font-family: inherit;
+}
+
 .option.nopadding {
 	padding: 0px 10px 0px 0px !important;
 }

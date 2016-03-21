@@ -61,32 +61,10 @@
 
 			<div class="space-small"></div>
 			<button type="button" class="btn btn-default" onclick="restis_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to request editor</button> &nbsp; 
-			<button type="button" class="btn btn-link addparam"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button>
+			<button type="button" class="btn btn-link addparam" onclick="runRequest();"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button>
 		</div>
 	</div>
-	
-	<div class="modal fade saveRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title" id="exampleModalLabel">Save request</h4>
-		  </div>
-		  <div class="modal-body">
-			<form>
-			  <div class="form-group">
-				<label for="recipient-name" class="control-label">Name your request:</label>
-				<input type="text" class="form-control" id="request-name">
-			  </div>
-			</form>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			<button type="button" class="btn btn-primary" onclick="restis_SaveSystem_Save()">Save request</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
+
 
 	<div class="modal fade requestErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -197,51 +175,23 @@
 				setTimeout( function(){ $( '.requestsent' ).fadeOut( 60 ); }, 1000 );
 
 				response = result[ 'response_data' ];
-				//response = JSON.stringify( JSON.parse( response ), null, 3 );
 
 				$btn.button( 'reset' );
 
 				$( '.result_rows' ).slideDown( 100 );
-
-				/*$( '.headers_request_result pre' ).html( '' );
-				for( header in result[ 'request_headers' ] ) {
-					$( '.headers_request_result pre' ).append( 
-						'<div class="header-name">' + 
-						_formatHeader( header ) + ': </div>' + result[ 'request_headers' ][ header ] + '<br />' );
-				}
-				$( '.headers_request_result' ).slideDown( 100 );
-
-				
-				$( '.headers_response_result pre' ).html( '' );
-				for( header in result[ 'response_headers' ] ) {
-					$( '.headers_response_result pre' ).append( 
-						'<div class="header-name">' + 
-						_formatHeader( header ) + ': </div>' + result[ 'response_headers' ][ header ] + '<br />' );
-				}
-				$( '.infopanel .panel-body' ).html( '<code style="font-size: 18px;font-weight: bold;margin-right: 5px;">' + $( '.selectpicker_method' ).val() + '</code>' + ' <samp> ' + $( '.desturl' ).val() + '</samp>' );
-				$( '.infopanel' ).slideDown( 100 );*/
-				
-				var HTTPCodes = {
-					200: '<b style="color: green;">200 OK</b>',
-					404: '<b style="color: orange;">404 Not Found</b>',
-					500: '<b style="color: darkred;">500 Internal Server Error</b>',
-					401: '<b style="color: red;">401 Not Authorized</b>',
-				};
-				
-
 				response = response.split( '<' ).join( '&lt;' ).split( '>' ).join( '&gt;' );
 				$( '.request_result pre' ).html( '' );
-				$( '.request_result pre' ).append( 'HTTP/1.1 ' + result[ 'http_status_code' ] + "<br />" );
+				$( '.request_result pre' ).append( '<span style="color: #7800AF;">HTTP/1.1</span> <span style="color: #FF0000;">' + result[ 'http_status_code' ] + "</span><br />" );
 				for( header in result[ 'response_headers' ] ) {
-					$( '.request_result pre' ).append( _formatHeader( header ) + ': ' + result[ 'response_headers' ][ header ] + "<br />" );
+					$( '.request_result pre' ).append( '<span style="color: #001DC6;">' + _formatHeader( header ) + ':</span> <span style="color: #7F0000;">' + result[ 'response_headers' ][ header ] + "</span><br />" );
 				}
 				$( '.request_result pre' ).append( '<br />' );
-				$( '.request_result pre' ).append( response.length == 0 ? '<span style="color: red;"><b>restis</b>: empty response body</span>' : response );
+				$( '.request_result pre' ).append( response.length == 0 ? '<span style="color: red;"><b>restis</b>: empty response body</span>' : '<span style="color: #7900B2;">' + response );
+				$( '.request_result pre' ).append( '</span>' );
 				$( '.time' ).html( result[ 'execution_time' ] );
 
 
 				if( responseWindowShown === false ) {
-
 					$( '.result_rows' ).fadeIn( 100 );
 					$( '.request_result' ).slideDown( 100 );
 					responseWindowShown = true;
@@ -273,33 +223,4 @@
 					scrollTop: $( ".container" ).offset().top
 				}, 320 );
 		}
-
-		function restis_Backup_SaveAllData() {
-			if( typeof( localStorage ) !== "undefined" ) {
-				if( $( '.desturl' ).val() )
-					localStorage.setItem( "restis_apirm_psw_dest", $( '.desturl' ).val() );
-				//alert( localStorage.getItem( "restis_apirm_psw_dest" ) );
-				localStorage.setItem( "restis_apirm_psw_data", ( getPlainRAW() == '=undefined' ? '' : getPlainRAW() ) );
-			}
-		}
-
-		setInterval( function() { restis_Backup_SaveAllData(); }, 1500 );
-
-		function restis_Backup_RestoreAllData() {
-			//alert( localStorage.getItem( "restis_apirm_psw_dest" ) );
-			$( '.desturl' ).val( localStorage.getItem( "restis_apirm_psw_dest" ) );
-			if( localStorage.getItem( "restis_apirm_psw_data" ) ) {
-				$( '.raw_data' ).val( localStorage.getItem( "restis_apirm_psw_data" ) );
-				if( localStorage.getItem( "restis_apirm_psw_rawview" ) != false )
-					$( '.converttoparams' ).click();
-			}
-		}
-
-		function restis_Backup_CheckDataAvailable() {
-			restis_Backup_RestoreAllData();
-		}
-
-		$( document ).ready( function() { restis_Backup_CheckDataAvailable(); } );
-
-		$( '.selectpicker_method' ).selectpicker();
 	</script>
