@@ -4,6 +4,7 @@ module.exports = {
 		var shell = '';
 		var build = '0.1.0 (prototype)';
 		var menu_items = {
+			'/dashboard': 'Dashboard',
 			'/': 'Request Master',
 			'/plain': 'Plain request editor',
 			'/scenarios': 'Testing Scenarios',

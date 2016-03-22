@@ -1,25 +1,51 @@
-		<link rel="stylesheet" type="text/css" href="/client/codemirror/codemirror.css" />
-		<script type="text/javascript" src="/client/codemirror/codemirror.js"></script>
-		<script type="text/javascript" src="/client/codemirror/mode/http/http.js"></script>
+		<script type="text/javascript" src="/client/js/Chart.min.js"></script>
 		<div class="tab">
 		<div class="space"></div>
-		<div class="info">
-			<div class="icon"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
-			<b>Information about plain HTTP request editor</b><br />
-		  	Welcome to plain HTTP request editor! Using this tool you can send plain HTTP requests without any additional actions. Just paste (if you'd like to write requests manually, <a href="">try out scenario editor instead</a>) your HTTP request into textarea below and press "send". That's all you need.
-		</div>
-		<div class="space"></div>
-		<textarea class="plain-request" id="prc"></textarea>
-		<script type="text/javascript">
-		var editor = CodeMirror.fromTextArea( document.getElementById( 'prc' ), {
-			lineNumbers: true,
-			autofocus: true,
-			lineWrapping: true
-		});
-</script>
-		<div class="space"></div>
+		<div class="row">
+		<div class="col-md-8">
 		<div class="area">
-		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;">Settings</h4>
+		<h4 style="font-weight: normal;margin: 0;">Latest Results for «<span style="font-weight: bold;">vk.com get profile id=1</span>»</h4>
+		<div class="space-small"></div>
+		<canvas id="last" height="80" width="570"></canvas>
+		<div class="chart-caption right">Most recent</div>
+		<div class="chart-caption">Oldest</div>
+		<div class="results"></div>
+		<script type="text/javascript">
+			var ctx = document.getElementById("last").getContext("2d");
+			var data = {
+				labels: ["13:58", "14:00", "14:02", "14:04", "14:06", "14:08", "14:10", "14:12", "14:14", "14:16", "14:18", "14:20"],
+				datasets: [
+					{
+						label: "My Second dataset",
+						fillColor: "rgba(229,244,255,0.2)",
+						strokeColor: "#338ECF",
+						pointColor: "#338ECF",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+						data: [100, 100, 75, 50, 90, 100, 100, 90, 100, 100, 90, 100]
+					}
+				]
+			};
+
+			Chart.defaults.global.scaleFontFamily = "Roboto";
+			Chart.defaults.global.scaleLabel =  " <%=value%>%";
+			Chart.defaults.global.scaleBeginAtZero = true;
+			Chart.defaults.global.showScale = false;
+			var myNewChart = new Chart(ctx).Line(data, {
+				scaleShowHorizontalLines: true,
+				scaleShowVerticalLines: false
+			});
+
+			for( x = 0; x <= 36; x++ ) {
+				$( '.results' ).append( '<div class="result-bar"></div>' );
+			}
+		</script>
+		</div>
+		</div>
+		<div class="col-md-4">
+		<div class="area">
+		<h4 style="font-weight: bold;margin: 0;">Scheduled jobs</h4>
 		<div class="space-small"></div>
 			<div style="display: inline-block;">
 			<div class="option nopadding">Save request in history: </div>
@@ -37,6 +63,8 @@
 			<option value="GET" selected>Off</option>
 			<option value="POST" >On</option>
 		</select>
+		</div>
+		</div>
 		</div>
 		</div>
 

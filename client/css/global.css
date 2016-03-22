@@ -500,3 +500,27 @@ pre span {
 .CodeMirror-linenumber {
 	text-align: center !important;
 }
+
+.result-bar {
+	background: #EEEEEE;
+	width: 2%;
+	margin-right: 4px;
+	height: 25px;
+	display: inline-block;
+	border: solid 0px white;
+	border-radius: 3px;
+}
+
+.right {
+	float: right;
+	margin-right: 4px;
+}
+
+.chart-caption {
+	font-weight: bold;
+	font-size: 11px;
+	color: #BBBBBB;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin-bottom: 6px;
+}
