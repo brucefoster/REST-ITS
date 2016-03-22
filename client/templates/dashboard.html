@@ -10,16 +10,24 @@
 		<div class="chart-caption right">Most recent</div>
 		<div class="chart-caption">Oldest</div>
 		<div class="results"></div>
+		<div class="row">
+			<div class="col-md-4 text-center score">97.00%<div>Average assertion rate</div></div>
+			<div class="col-md-4 text-center score">34.71<span> ms</span><div>Average response time</div></div>
+			<div class="col-md-4 text-center score">54.20<span> ms</span><div>Last testing</div></div>
+		</div>
 		<script type="text/javascript">
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
 			var ctx = document.getElementById("last").getContext("2d");
 			var data = {
 				labels: ["13:58", "14:00", "14:02", "14:04", "14:06", "14:08", "14:10", "14:12", "14:14", "14:16", "14:18", "14:20"],
 				datasets: [
 					{
 						label: "My Second dataset",
-						fillColor: "rgba(229,244,255,0.2)",
-						strokeColor: "#338ECF",
-						pointColor: "#338ECF",
+						fillColor: "rgba(0,0,0,0.02)",
+						strokeColor: "#DDDDDD",
+						pointColor: "#DDDDDD",
 						pointStrokeColor: "#fff",
 						pointHighlightFill: "#fff",
 						pointHighlightStroke: "rgba(151,187,205,1)",
@@ -38,7 +46,12 @@
 			});
 
 			for( x = 0; x <= 36; x++ ) {
-				$( '.results' ).append( '<div class="result-bar"></div>' );
+				var class_name = getRandomInt( 0, 18 );
+				if( class_name == 8 )
+					class_name = 'fail';
+				else
+					class_name = 'success';
+				$( '.results' ).append( '<div class="result-bar ' + class_name + '"></div>' );
 			}
 		</script>
 		</div>
@@ -67,31 +80,6 @@
 		</div>
 		</div>
 		</div>
-
-		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Send plain request</button> 
-		
-		<div style="display: inline-block;"><div class="requestsent csshidden"><span class="glyphicon glyphicon-ok"></span> &nbsp;Done</div></div>
-		<div class="alert alert-danger csshidden request_error_data" role="alert"></div>
-
-		<div class="result_rows csshidden">	
-		<div class="space"></div>
-		<div class="panel panel-default infopanel csshidden">
-		<div class="panel-body">
-		</div></div>
-			<div class="csshidden request_result" style="max-width: 939px;">
-				<div class="space"></div>
-				<div class="label">HTTP Response: &nbsp; &nbsp; 
-				<span class="glyphicon glyphicon-time"></span>&nbsp; got in <span class="time"></span>s
-				</div>
-				<div class="space-small"></div>
-				<pre></pre>
-			</div>
-
-			<div class="space-small"></div>
-			<button type="button" class="btn btn-default" onclick="restis_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to request editor</button> &nbsp; 
-			<button type="button" class="btn btn-link addparam" onclick="runRequest();"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button>
-		</div>
-	</div>
 
 
 	<div class="modal fade requestErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

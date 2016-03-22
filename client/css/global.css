@@ -511,6 +511,24 @@ pre span {
 	border-radius: 3px;
 }
 
+.result-bar.success {
+	background: #B2E8AE;
+}
+
+.result-bar.success:hover {
+	background: #60C657;
+	cursor: pointer;
+}
+
+.result-bar.fail:hover {
+	background: #E2987C;
+	cursor: pointer;
+}
+
+.result-bar.fail {
+	background: #E5BDAE;
+}
+
 .right {
 	float: right;
 	margin-right: 4px;
@@ -519,6 +537,31 @@ pre span {
 .chart-caption {
 	font-weight: bold;
 	font-size: 11px;
+	color: #BBBBBB;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin-bottom: 6px;
+}
+
+.score {
+	font-weight: lighter;
+	margin-top: 14px;
+	font-size: 28px;
+	border-right: solid 1px #EEEEEE;
+}
+
+.score span {
+	font-size: 20px;
+}
+
+.score:last-child {
+	border-right: solid 0px #EEEEEE;
+}
+
+.score div {
+	padding-top: 4px;
+	font-weight: bold;
+	font-size: 10px;
 	color: #BBBBBB;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
