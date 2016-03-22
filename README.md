@@ -1,4 +1,4 @@
-## REST API Inspection System (restis)
+## REST API Inspection System (Restis)
 #### Inspect and monitor your REST APIs locally & build testing scenarios
 This Node.JS-based script is designed to inspect & monitor REST APIs with local mashine and has following features:
 * Check and test your REST APIs behavior with built-in Request Master ~~and save them for later~~;
@@ -10,17 +10,17 @@ This Node.JS-based script is designed to inspect & monitor REST APIs with local 
 
 #### How to run
 * Download and copy to local path contents of "master";
-* Run **restis core** with Node.JS:
+* Run Restis with Node.JS:
 ```
 node node-server.js
 ```
-* Web server of **restis** is now available at 
+* Web server of Restis is now available at 
 ```
 http://localhost:8020/
 ```
 
 #### How to use
-As for now, with restis you can send requests to REST API using POST, GET, PUT, DELETE methods with managable parameters and optional Basic Authentication and custom headers features. These options are available directly from home page at `http://localhost:8020/`.
+As for now, with Restis you can send requests to REST API using POST, GET, PUT, DELETE methods with managable parameters and optional Basic Authentication and custom headers features. These options are available directly from home page at `http://localhost:8020/`.
 
 #### Planned
 - [ ] Dashboard with such blocks as "Last testings", "Average response time", "Statistics" etc.
