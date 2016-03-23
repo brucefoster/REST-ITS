@@ -1,18 +1,20 @@
 		<script type="text/javascript" src="/client/js/Chart.min.js"></script>
 		<div class="tab">
 		<div class="space"></div>
-		<div class="row">
-		<div class="col-md-8">
-		<div class="area">
-		<h4 style="font-weight: normal;margin: 0;">Latest Results for «<span style="font-weight: bold;">vk.com get profile id=1</span>»</h4>
 		<div class="space-small"></div>
-		<canvas id="last" height="80" width="570"></canvas>
+		<div class="row">
+
+		<div class="col-md-6">
+		<div class="area">
+		<h4 style="font-weight: normal;margin: 0;"><a href="" style="font-weight: bold;color: black;">VK.com /Profile uid=1</a></h4>
+		<div class="space-small"></div>
+		<canvas id="last" height="40" width="410"></canvas>
 		<div class="chart-caption right">Most recent</div>
 		<div class="chart-caption">Oldest</div>
 		<div class="results"></div>
 		<div class="row">
-			<div class="col-md-4 text-center score">97.00%<div>Average assertion rate</div></div>
-			<div class="col-md-4 text-center score">34.71<span> ms</span><div>Average response time</div></div>
+			<div class="col-md-4 text-center score">97.00%<div>Aver. success rate</div></div>
+			<div class="col-md-4 text-center score">34.71<span> ms</span><div>Aver. response time</div></div>
 			<div class="col-md-4 text-center score">54.20<span> ms</span><div>Last testing</div></div>
 		</div>
 		<script type="text/javascript">
@@ -25,7 +27,7 @@
 				datasets: [
 					{
 						label: "My Second dataset",
-						fillColor: "rgba(0,0,0,0.02)",
+						fillColor: "rgba(0,0,0,0.015)",
 						strokeColor: "#DDDDDD",
 						pointColor: "#DDDDDD",
 						pointStrokeColor: "#fff",
@@ -45,7 +47,7 @@
 				scaleShowVerticalLines: false
 			});
 
-			for( x = 0; x <= 36; x++ ) {
+			for( x = 0; x <= 32; x++ ) {
 				var class_name = getRandomInt( 0, 18 );
 				if( class_name == 8 )
 					class_name = 'fail';
@@ -56,29 +58,64 @@
 		</script>
 		</div>
 		</div>
-		<div class="col-md-4">
+
+		
+		<div class="col-md-6">
 		<div class="area">
-		<h4 style="font-weight: bold;margin: 0;">Scheduled jobs</h4>
+		<h4 style="font-weight: normal;margin: 0;"><a href="" style="font-weight: bold;color: black;">Restis /plain response</a></h4>
 		<div class="space-small"></div>
-			<div style="display: inline-block;">
-			<div class="option nopadding">Save request in history: </div>
-			<select name="method" class="selectpicker_method" data-width="auto">
-			<option value="GET" selected>Save</option>
-			<option value="POST" >Dont'save</option>
-		</select>
-			<div class="option">Trim spaces: </div>
-			<select name="method" class="selectpicker_method" data-width="auto">
-			<option value="GET" selected>Off</option>
-			<option value="POST" >On</option>
-		</select>
-			<div class="option">File upload: </div>
-			<select name="method" disabled class="selectpicker_method" data-width="auto">
-			<option value="GET" selected>Off</option>
-			<option value="POST" >On</option>
-		</select>
+		<canvas id="last-2" height="40" width="410"></canvas>
+		<div class="chart-caption right">Most recent</div>
+		<div class="chart-caption">Oldest</div>
+		<div class="results two"></div>
+		<div class="row">
+			<div class="col-md-4 text-center score">100.00%<div>Aver. success rate</div></div>
+			<div class="col-md-4 text-center score">02.11<span> ms</span><div>Aver. response time</div></div>
+			<div class="col-md-4 text-center score">01.44<span> ms</span><div>Last testing</div></div>
+		</div>
+		<script type="text/javascript">
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+			var ctx = document.getElementById("last-2").getContext("2d");
+			var data = {
+				labels: ["13:58", "14:00", "14:02", "14:04", "14:06", "14:08", "14:10", "14:12", "14:14", "14:16", "14:18", "14:20"],
+				datasets: [
+					{
+						label: "My Second dataset",
+						fillColor: "rgba(0,0,0,0.015)",
+						strokeColor: "#DDDDDD",
+						pointColor: "#DDDDDD",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+						data: [100, 100, 75, 50, 90, 100, 100, 90, 100, 100, 90, 100]
+					}
+				]
+			};
+
+			Chart.defaults.global.scaleFontFamily = "Roboto";
+			Chart.defaults.global.scaleLabel =  " <%=value%>%";
+			Chart.defaults.global.scaleBeginAtZero = true;
+			Chart.defaults.global.showScale = false;
+			var myNewChart = new Chart(ctx).Line(data, {
+				scaleShowHorizontalLines: true,
+				scaleShowVerticalLines: false
+			});
+
+			for( x = 0; x <= 32; x++ ) {
+				var class_name = getRandomInt( 0, 18 );
+				if( class_name == 8 )
+					class_name = 'fail';
+				else
+					class_name = 'success';
+				$( '.results.two' ).append( '<div class="result-bar ' + class_name + '"></div>' );
+			}
+		</script>
 		</div>
 		</div>
-		</div>
+
+		
 		</div>
 
 

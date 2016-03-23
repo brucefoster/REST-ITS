@@ -8,7 +8,7 @@ module.exports = {
 			'/': 'Request Master',
 			'/plain': 'Plain request editor',
 			'/scenarios': 'Testing Scenarios',
-			'/saved-requests': 'Saved Requests',
+			'/saved-requests': 'Collections',
 			'/settings': 'Global Settings',
 			'/logs': 'Logs & History'
 		};
