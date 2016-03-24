@@ -1,0 +1,272 @@
+		<link rel="stylesheet" type="text/css" href="/client/codemirror/codemirror.css" />
+		<script type="text/javascript" src="/client/codemirror/codemirror.js"></script>
+		<script type="text/javascript" src="/client/codemirror/mode/javascript/javascript.js"></script>
+		<div class="tab">
+		<div class="space"></div>
+		<div class="area">
+		<h4 style="font-weight: bold;padding: 0px 0 0 0;margin: 0;">General Information</h4>
+		<div class="space-small"></div>
+		<div class="form-data">
+			Name your scenario:
+			<input type="text" class="form-control css_free longinput httpauth_pass" style="width: 750px;" placeholder="Choose scenario name so you can instantly recognize it">
+			<hr />
+			<div style="display: inline-block;">
+			<div class="option nopadding">Repeat: </div>
+			<select name="method" class="selectpicker_method" data-width="auto">
+			<option value="GET" selected>On demand only</option>
+			<option value="POST">Every minute</option>
+			<option value="POST">Every 5 minutes</option>
+			<option value="POST">Every 15 minutes</option>
+			<option value="POST">Every 30 minutes</option>
+			<option value="POST">Every hour</option>
+			<option value="POST">Every day</option>
+		</select>
+			<div class="option">Failure notification: </div>
+			<select name="method" class="selectpicker_method" data-width="auto">
+			<option value="GET" selected>Don't notify</option>
+			<option value="POST" >E-mail</option>
+			<option value="POST" >Push notifications</option>
+			<option value="POST" >Both methods</option>
+		</select>
+			<div class="info-inline"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Read more about <b>scenarios</b> at <a href="">project's wiki</a></div>
+		</div>
+		</div>
+		</div>
+			<style type="text/css">
+			.CodeMirror { height: 735px; }</style>
+			
+		<div class="row">
+		<div class="col-md-8">
+		<textarea class="scenario-editor" id="prc"></textarea>
+		</div>
+		<div class="col-md-4">
+		<div class="panel panel-default">
+		<div class="panel-heading">Scenarios APIs</div>
+		<div class="panel-body">
+			Click on method for detailed information and usage examples:
+			<ul style="padding-left: 35px;padding-top: 5px;">
+<li class="no-dot"><a href="">response</a></li>
+<li><a href="">response.http_code</a></li>
+<li><a href="">response.headers</a></li>
+<li><a href="">response.data</a></li>
+<li><a href="">response.exec_time</a></li>
+<li class="no-dot"><a href="">request</a></li>
+<li><a href="">request.method</a></li>
+<li><a href="">request.url</a></li>
+<li><a href="">request.send()</a></li>
+<li><a href="">request.auth</a></li>
+<li><a href="">request.auth.username</a></li>
+<li><a href="">request.auth.password</a></li>
+<li class="no-dot"><a href="">request.headers</a></li>
+<li><a href="">request.headers.add()</a></li>
+<li><a href="">request.headers.delete()</a></li>
+<li><a href="">request.headers.modify()</a></li>
+<li><a href="">request.headers.empty()</a></li>
+<li class="no-dot"><a href="">request.params</a></li>
+<li><a href="">request.params.add()</a></li>
+<li><a href="">request.params.add_raw()</a></li>
+<li><a href="">request.params.delete()</a></li>
+<li><a href="">request.params.modify()</a></li>
+<li><a href="">request.params.empty()</a></li>
+<li class="no-dot"><a href="">assertion</a></li>
+<li><a href="">assertion.equal( one, two, message 1)</a></li>
+			</ul>
+		</div>
+		</div>
+		</div>
+		</div>
+		<script type="text/javascript">
+		var editor = CodeMirror.fromTextArea( document.getElementById( 'prc' ), {
+			lineNumbers: true,
+			autofocus: true,
+			lineWrapping: true
+		});
+</script>
+		
+
+		<button type="button" class="btn btn-primary btn-lg sendrequst" onclick="runRequest();" data-loading-text="Processing request..."><span class="glyphicon glyphicon-flash"></span> Run scenario & save</button> 
+		
+		<div style="display: inline-block;"><div class="requestsent csshidden"><span class="glyphicon glyphicon-ok"></span> &nbsp;Done</div></div>
+		<div class="alert alert-danger csshidden request_error_data" role="alert"></div>
+
+		<div class="result_rows csshidden">	
+		<div class="space"></div>
+		<div class="panel panel-default infopanel csshidden">
+		<div class="panel-body">
+		</div></div>
+			<div class="csshidden request_result" style="max-width: 939px;">
+				<div class="space"></div>
+				<div class="label">HTTP Response: &nbsp; &nbsp; 
+				<span class="glyphicon glyphicon-time"></span>&nbsp; got in <span class="time"></span>s
+				</div>
+				<div class="space-small"></div>
+				<pre></pre>
+			</div>
+
+			<div class="space-small"></div>
+			<button type="button" class="btn btn-default" onclick="restis_Page_BackToTop()"><span class="glyphicon glyphicon-arrow-up"> </span> &nbsp; Back to request editor</button> &nbsp; 
+			<button type="button" class="btn btn-link addparam" onclick="runRequest();"><span class="glyphicon glyphicon-repeat"> </span> &nbsp; Repeat request</button>
+		</div>
+	</div>
+
+
+	<div class="modal fade requestErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+	<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="myModalLabel">Error was occurred</h4>
+	  </div>
+	  <div class="modal-body">
+		...
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="runRequest();">Repeat request</button>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	
+	<script type="text/javascript">
+		var responseWindowShown = false;
+		function runRequest() {
+			var request = editor.getValue().trim();
+			var method = '';
+			var supported_methods = [
+				'post', 'get', 'put', 'delete'
+			];
+			var request_lines = request.split( "\n" );
+			var request_info = request_lines[ 0 ].split( ' ' );
+
+			if( supported_methods.indexOf( request_info[ 0 ].toLowerCase() ) === -1 ) {
+				$( '.requestErrorModal' ).modal( 'show' );
+				$( '.requestErrorModal .modal-body' ).html( '' );
+				$( '.requestErrorModal .modal-body' ).append( '<div style="display: inline-block;width: 150px;line-height: 24px;font-weight: bold;">Error name:</div>' + '<code>HTTP method is not supported</code><br />' );
+				$( '.requestErrorModal .modal-body' ).append( 
+					'<div style="display: inline-block;width: 150px;line-height: 24px;font-weight: bold;vertical-align: top;">Error description:</div>' + 
+					'<samp style="display: inline-block;width: 380px;vertical-align: top;padding-top: 3px;">Unfortunately, restis currently doesn\'t support \'' + request_info[ 0 ] + '\' HTTP method.</samp>' 
+				);
+					
+				$btn.button( 'reset' );
+				return;
+			} else
+				method = request_info[ 0 ].toUpperCase();
+
+			var host = '';
+			var path = request_info[ 1 ];
+			var headers = {};
+			var data = '';
+			request_lines = request_lines.slice( 1 );
+
+			for( line in request_lines ) {
+				if( request_lines[ line ] === '' )
+					data = false;
+
+				if( data !== false ) {
+					var delimiter = request_lines[ line ].split( ':', 2 );
+					switch( delimiter[ 0 ].toLowerCase() ) {
+						case 'host':
+							host = delimiter[ 1 ].trim();
+							break;
+
+						default:
+							headers[ delimiter[ 0 ] ] = delimiter[ 1 ].trim();
+							break;
+					}
+				} else {
+					data = request_lines[ line ];
+				}
+			} 
+
+			var $btn = $( '.sendrequst' ).button( 'loading' );
+			var url = 'http://' + host + path;
+
+			var request = 
+				'restis_rp=true&data=' + 
+				data.split('&').join('/$restis:s_and/').split('=').join('/$restis:s_eq/') + 
+				'&url=' + url +
+				'&headers=' + JSON.stringify( headers ) +
+				'&method=' + method;
+
+			if( responseWindowShown ) {
+				$( '.result_rows' ).fadeTo( 100, 0.2 );
+			}
+
+			$.post( "/send", request, function( data ) {
+				result = JSON.parse( data );
+
+				/*
+				======================
+				Handling errors
+				======================
+				*/
+				if( result[ 'error' ] ) { 
+					$( '.requestErrorModal' ).modal( 'show' );
+					$( '.requestErrorModal .modal-body' ).html( '' );
+					$( '.requestErrorModal .modal-body' ).append( 'This is all the info we have for this error.<br /><hr />' );
+					$( '.requestErrorModal .modal-body' ).append( '<div style="display: inline-block;width: 150px;line-height: 24px;font-weight: bold;">Error name:</div>' + '<code>' + result[ 'error' ] + '</code><br />' );
+					$( '.requestErrorModal .modal-body' ).append( 
+						'<div style="display: inline-block;width: 150px;line-height: 24px;font-weight: bold;vertical-align: top;">Error description:</div>' + 
+						'<samp style="display: inline-block;width: 380px;vertical-align: top;padding-top: 3px;">' + result[ 'error_description' ] + 
+						'</samp>' 
+					);
+
+					$btn.button( 'reset' );
+					return;
+				}
+				$( '.requestsent' ).fadeIn( 60 );
+				setTimeout( function(){ $( '.requestsent' ).fadeOut( 60 ); }, 1000 );
+
+				response = result[ 'response_data' ];
+
+				$btn.button( 'reset' );
+
+				$( '.result_rows' ).slideDown( 100 );
+				response = response.split( '<' ).join( '&lt;' ).split( '>' ).join( '&gt;' );
+				$( '.request_result pre' ).html( '' );
+				$( '.request_result pre' ).append( '<span style="color: #7800AF;">HTTP/1.1</span> <span style="color: #FF0000;">' + result[ 'http_status_code' ] + "</span><br />" );
+				for( header in result[ 'response_headers' ] ) {
+					$( '.request_result pre' ).append( '<span style="color: #001DC6;">' + _formatHeader( header ) + ':</span> <span style="color: #7F0000;">' + result[ 'response_headers' ][ header ] + "</span><br />" );
+				}
+				$( '.request_result pre' ).append( '<br />' );
+				$( '.request_result pre' ).append( response.length == 0 ? '<span style="color: red;"><b>restis</b>: empty response body</span>' : '<span style="color: #7900B2;">' + response );
+				$( '.request_result pre' ).append( '</span>' );
+				$( '.time' ).html( result[ 'execution_time' ] );
+
+
+				if( responseWindowShown === false ) {
+					$( '.result_rows' ).fadeIn( 100 );
+					$( '.request_result' ).slideDown( 100 );
+					responseWindowShown = true;
+				}
+				else {
+					$( '.result_rows' ).fadeTo( 100, 1 );
+				}
+
+				$('html, body').animate({
+					scrollTop: $( ".request_result" ).offset().top
+				}, 620 );
+			} ).fail(function( jqXHR, textStatus, errorThrown ) {
+				alert( textStatus );
+			  });
+		}
+
+		function _formatHeader( headerName ) {
+			var parts = headerName.split( '-' );
+			var result = [];
+			for( i = 0; i < parts.length; i++ ) {
+				result.push( parts[ i ].charAt( 0 ).toUpperCase() + parts[ i ].slice( 1 ) );
+			}
+
+			return result.join( '-' );
+		}
+
+		function restis_Page_BackToTop() {
+			$('html, body').animate({
+					scrollTop: $( ".container" ).offset().top
+				}, 320 );
+		}
+
+		$( '.selectpicker_method' ).selectpicker();
+	</script>
