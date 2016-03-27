@@ -31,21 +31,9 @@ module.exports = {
 
 		var script = `
 			request.params.add( 'hostname', 'data' );
-			request.params.add( 'hostname', 'data' );
-			options.strict = false;
-			request.params.add( 'hostname', 'data' );
-			request.params.delete( 'correct' );
-			request.params.modify( 'alpha', false );
-			request.params.clear();
-
 			request.headers.add( 'Content-type', 'text/html' );
-			request.headers.delete( 'Content-type 2' );
-			request.headers.delete( 'Content-type' );
-			request.headers.delete( 'Content-type' );
-			request.headers.clear();
-			assertion.equal( 1, 2 );
-			assertion.equal( 2, 2 );
-			request.send( function() {} );
+			assertion.equal( "Ivan", "ivan" );
+			//request.send( function() {} );
 			`;
 		
 		var result = sp._executeScript( script );

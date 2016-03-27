@@ -2,51 +2,27 @@
 		<div class="tab">
 		<div class="space"></div>
 		<div class="space-small"></div>
+
+		<h4 style="font-weight: normal;margin: 0;margin-bottom: 10px;"><a href="" style="font-weight: 600;color: #505050;font-size: 14px;text-transform: uppercase;letter-spacing: 0.05em;">Last results</a></h4>
 		<div class="row">
 
-		<div class="col-md-6">
-		<div class="area">
-		<h4 style="font-weight: normal;margin: 0;"><a href="" style="font-weight: bold;color: black;">VK.com /Profile uid=1</a></h4>
-		<div class="space-small"></div>
-		<canvas id="last" height="40" width="410"></canvas>
-		<div class="chart-caption right">Most recent</div>
-		<div class="chart-caption">Oldest</div>
-		<div class="results"></div>
+		<div class="col-md-12">
+		<div class="area last-results">
+		<div class="result-data">completed <b>2 min</b> ago, HTTP code <b>200</b>, exec. time <b>47.11ms</b></div>
+		<h4 style="font-weight: normal;margin: 0;"><a href="" style="font-weight: 400;color: #337AC0;font-size: 14px;">ВКонтакте тест API профиля</a></h4>
 		<div class="row">
-			<div class="col-md-4 text-center score">97.00%<div>Aver. success rate</div></div>
-			<div class="col-md-4 text-center score">34.71<span> ms</span><div>Aver. response time</div></div>
-			<div class="col-md-4 text-center score">54.20<span> ms</span><div>Last testing</div></div>
+			<div class="col-md-6 text-center score"><div class="chart-caption right">Most recent</div>
+		<div class="chart-caption">Oldest</div>
+		<div class="results"></div></div>
+			<div class="col-md-2 text-center score">97.00%<div>Aver. success rate</div></div>
+			<div class="col-md-2 text-center score">34.71<span> ms</span><div>Aver. response time</div></div>
+			<div class="col-md-2 text-center score">54.20<span> ms</span><div>Last testing</div></div>
 		</div>
 		<script type="text/javascript">
 		function getRandomInt(min, max) {
 			return Math.floor(Math.random() * (max - min)) + min;
 		}
-			var ctx = document.getElementById("last").getContext("2d");
-			var data = {
-				labels: ["13:58", "14:00", "14:02", "14:04", "14:06", "14:08", "14:10", "14:12", "14:14", "14:16", "14:18", "14:20"],
-				datasets: [
-					{
-						label: "My Second dataset",
-						fillColor: "rgba(0,0,0,0.015)",
-						strokeColor: "#DDDDDD",
-						pointColor: "#DDDDDD",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(151,187,205,1)",
-						data: [100, 100, 75, 50, 90, 100, 100, 90, 100, 100, 90, 100]
-					}
-				]
-			};
-
-			Chart.defaults.global.scaleFontFamily = "Roboto";
-			Chart.defaults.global.scaleLabel =  " <%=value%>%";
-			Chart.defaults.global.scaleBeginAtZero = true;
-			Chart.defaults.global.showScale = false;
-			var myNewChart = new Chart(ctx).Line(data, {
-				scaleShowHorizontalLines: true,
-				scaleShowVerticalLines: false
-			});
-
+		
 			for( x = 0; x <= 32; x++ ) {
 				var class_name = getRandomInt( 0, 18 );
 				if( class_name == 8 )
@@ -59,50 +35,22 @@
 		</div>
 		</div>
 
-		
-		<div class="col-md-6">
-		<div class="area">
-		<h4 style="font-weight: normal;margin: 0;"><a href="" style="font-weight: bold;color: black;">Restis /plain response</a></h4>
-		<div class="space-small"></div>
-		<canvas id="last-2" height="40" width="410"></canvas>
-		<div class="chart-caption right">Most recent</div>
-		<div class="chart-caption">Oldest</div>
-		<div class="results two"></div>
+		<div class="col-md-12">
+		<div class="area last-results">
+		<div class="result-data">completed <b>2 min</b> ago, HTTP code <b>200</b>, exec. time <b>47.11ms</b></div>
+		<h4 style="font-weight: normal;margin: 0;"><a href="" style="font-weight: 400;color: #337AC0;font-size: 14px;">RESTIS get PRE page</a></h4>
 		<div class="row">
-			<div class="col-md-4 text-center score">100.00%<div>Aver. success rate</div></div>
-			<div class="col-md-4 text-center score">02.11<span> ms</span><div>Aver. response time</div></div>
-			<div class="col-md-4 text-center score">01.44<span> ms</span><div>Last testing</div></div>
+			<div class="col-md-6 text-center score"><div class="chart-caption right">Most recent</div>
+		<div class="chart-caption">Oldest</div>
+		<div class="results two"></div></div>
+			<div class="col-md-2 text-center score">97.00%<div>Aver. success rate</div></div>
+			<div class="col-md-2 text-center score">34.71<span> ms</span><div>Aver. response time</div></div>
+			<div class="col-md-2 text-center score">54.20<span> ms</span><div>Last testing</div></div>
 		</div>
 		<script type="text/javascript">
 		function getRandomInt(min, max) {
 			return Math.floor(Math.random() * (max - min)) + min;
 		}
-			var ctx = document.getElementById("last-2").getContext("2d");
-			var data = {
-				labels: ["13:58", "14:00", "14:02", "14:04", "14:06", "14:08", "14:10", "14:12", "14:14", "14:16", "14:18", "14:20"],
-				datasets: [
-					{
-						label: "My Second dataset",
-						fillColor: "rgba(0,0,0,0.015)",
-						strokeColor: "#DDDDDD",
-						pointColor: "#DDDDDD",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(151,187,205,1)",
-						data: [100, 100, 75, 50, 90, 100, 100, 90, 100, 100, 90, 100]
-					}
-				]
-			};
-
-			Chart.defaults.global.scaleFontFamily = "Roboto";
-			Chart.defaults.global.scaleLabel =  " <%=value%>%";
-			Chart.defaults.global.scaleBeginAtZero = true;
-			Chart.defaults.global.showScale = false;
-			var myNewChart = new Chart(ctx).Line(data, {
-				scaleShowHorizontalLines: true,
-				scaleShowVerticalLines: false
-			});
-
 			for( x = 0; x <= 32; x++ ) {
 				var class_name = getRandomInt( 0, 18 );
 				if( class_name == 8 )
@@ -117,7 +65,9 @@
 
 		
 		</div>
+		<div class="space"></div>
 
+		<h4 style="font-weight: normal;margin: 0;margin-bottom: 10px;"><a href="" style="font-weight: 600;color: #505050;font-size: 14px;text-transform: uppercase;letter-spacing: 0.05em;">Recent alerts</a></h4>
 
 	<div class="modal fade requestErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
